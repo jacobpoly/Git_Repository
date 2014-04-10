@@ -12,9 +12,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import com.koreapolyschool.util.event.service.Event_Service;
+import com.koreapolyschool.util.event.view.GenericExcelView;
 import com.koreapolyschool.util.event.vo.EventVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
@@ -34,6 +37,23 @@ public class Event_Controller {
 	//	log.info("================ Method Name : gamestart"); 
 		
 		ModelAndView start_mav = new ModelAndView("e_roulette");  
+		
+		
+		List<StudentVO> stlist = event_Service.excel_list();
+		System.out.println(stlist.get(0).getEnter_yn());
+		
+		HashMap<String, String> params = new HashMap<>();
+
+		params.put("client_code", "1234");
+		params.put("product_no", "1");
+		
+		
+		List<ProgressDataVO> pglist = event_Service.product_list(params);
+		
+	System.out.println(pglist);
+		
+		
+		
 	/*
 		String member_code = "09110400";  //  코드  학번 
 
@@ -108,6 +128,8 @@ public class Event_Controller {
 		
 	ModelAndView result_mav = new ModelAndView();
 	
+		
+	
 	return result_mav;
 		
 	}
@@ -141,67 +163,70 @@ public class Event_Controller {
 		  return mv;
 		 } 
 	
+	@RequestMapping(value = "/excel.do")
+
+	public View selectCombo(@RequestParam Map<String, String> params,
+
+			Map<String, Object> modelMap) throws Exception {
+
+		List<String> colName = new ArrayList<String>();			// 컬럼
+
+		colName.add("1번");
+		colName.add("2번");
+		colName.add("3번");
+		colName.add("4번");
+		colName.add("5번");
+
+
+		List<String[]> colValue = new ArrayList<String[]>();
+
+
+		String[] arr1 = { "11111", "22222", "33333", "44444", "55555" };		// 데이터
+		String[] arr2 = { "aaaaa", "bbbbb", "ccccc", "ddddd", "eeeee" };
+		String[] arr3 = { "가가가", "나나나", "다다다", "라라라", "마마마" };
+
+		colValue.add(arr1);
+		colValue.add(arr2);
+		colValue.add(arr3);
+
+		modelMap.put("excelName", "test");
+		modelMap.put("colName", colName);
+		modelMap.put("colValue", colValue);
+
+
+		return new GenericExcelView();
+
+	}
+
+	}
+
 	
-/*
-	@RequestMapping("/dev_Search.do")
-	// ID 검색
-	public ModelAndView search(@ModelAttribute("vo") Dev_VO vo) { // 전달 데이터를 vo로
-																	// 변환되어
-																	// 받게된다.
-		System.out.println(vo.getId());
-
-		//Dev_VO vo1 = dao.selectDev(vo);
-		ModelAndView mav = new ModelAndView("data/view", "vo", vo1);
-
-		return mav;
-	}
-	*/
-
-/*
-	@RequestMapping("/dev_Update.do")
-	// 선택된 데이터만 받게 된다.
-	public ModelAndView update(HttpServletRequest req) throws Exception {
-		String[] id = req.getParameterValues("id");
-		String[] name = req.getParameterValues("name");
-		String[] password = req.getParameterValues("password");
-		
-		
-		
-		ModelAndView mav = new ModelAndView();
-		if (id != null) {
-			for (int i = 0; i < id.length; i++) {
-				System.out.println(i +" : "+ id[i]);
-			}
-		voArr = new Dev_VO[id.length];
-		for (int i = 0; i < id.length; i++) {
-			voArr[i] = new Dev_VO();
-			voArr[i].setId(id[i]);
-			voArr[i].setPassword(password[i]);
-			voArr[i].setName(name[i]);
-		}
-		System.out.println(dao.update(voArr) +"개가 수정되었습니다.");
-		}
-		mav = select();
-		return mav;
-	}
-*/
-/*
-	@RequestMapping("/dev_C_Delete.do")
-	public ModelAndView c_delete(@RequestParam String[] check) {
-
-		for (int i = 0; i < check.length; i++) {
-			System.out.println(i+" : "+check[i]);
-		}
-		
-		voArr = new Dev_VO[check.length];
-		for (int i = 0; i < check.length; i++) {
-			voArr[i] = new Dev_VO();
-			voArr[i].setId(check[i]);
-		}
-		System.out.println(dao.delete(voArr) +"개가 삭제되었습니다.");
-		ModelAndView mav = new ModelAndView();
-		mav=select();
-		return mav;
-	}
-	*/
-}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

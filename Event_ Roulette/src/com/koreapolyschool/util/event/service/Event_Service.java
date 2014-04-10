@@ -3,6 +3,7 @@ package com.koreapolyschool.util.event.service;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class Event_Service {
 	private Event_Dao event_dao;
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
+	private List<StudentVO> stList;
+	private List<ProgressDataVO> pgList;
 	
 	// 맴버코드 클라이언트코드로 변환
 	public StudentVO mem2client(String member_code) throws Exception  {
@@ -35,19 +38,19 @@ public class Event_Service {
 	}
 	
 	// 상품 리스트 추출
-	public ProgressDataVO product_list(HashMap<String, String> params) throws Exception  {
+	public List<ProgressDataVO> product_list(HashMap<String, String> params) throws Exception  {
 		
-			 progressDataVO = (ProgressDataVO)event_dao.sel_product_list(params);
+		pgList = event_dao.sel_product_list(params);
 			 
-			 return progressDataVO;
+			 return pgList;
 	}
 	
 	// 엑셀 데이터 추출
-	public StudentVO excel_list () throws Exception{
+	public List<StudentVO> excel_list () throws Exception{
 		
-		studentVO = event_dao.sel_excel_list();
+		stList = event_dao.sel_excel_list();
 		
-		return studentVO;
+		return stList;
 	}
 	
 	// 이벤트 응모 데이터 입력

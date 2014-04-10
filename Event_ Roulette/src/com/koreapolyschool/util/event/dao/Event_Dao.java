@@ -3,6 +3,7 @@ package com.koreapolyschool.util.event.dao;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class Event_Dao {
 	private SqlSession session;
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
+	private List<StudentVO> stList;
+	private List<ProgressDataVO> pgList;
 	
 	public StudentVO sel_mem2client(String member_code) throws Exception{
 		
@@ -45,19 +48,18 @@ public class Event_Dao {
 		
 	}
 		
-	public ProgressDataVO sel_product_list (HashMap<String, String> params) throws Exception{
+	public List<ProgressDataVO> sel_product_list (HashMap<String, String> params) throws Exception{
 		
 		System.out.println( 	params.get("client_code")	);
 		System.out.println(	params.get("product_no"));
 		
-		
 		if (params != null) {
-			progressDataVO =	session.selectOne("event_ns.sel_product_list", params);
+			pgList =	session.selectOne("event_ns.sel_product_list", params);
 		}else{
 			System.out.println(" client_code is null ");
 		}
 		
-		return progressDataVO;
+		return pgList;
 	}
 
 	public ProgressDataVO sel_product (String client_code) throws Exception{
@@ -71,12 +73,12 @@ public class Event_Dao {
 		return progressDataVO;
 	}
 	
-	public StudentVO sel_excel_list () throws Exception{
+	public List<StudentVO>  sel_excel_list () throws Exception{
 		
 		
-		studentVO = (StudentVO)session.selectList("event_ns.sel_excel_list");
+		stList = session.selectList("event_ns.sel_excel_list");
 		
-		return studentVO;
+		return stList;
 		
 	}
 	// 이벤트 응모 데이터 입력
@@ -92,21 +94,7 @@ public class Event_Dao {
 	public void ups_targerCnt_sub(EventVO eventVO) throws Exception{
 		session.update("event_ns.ups_targerCnt_sub", eventVO);
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
