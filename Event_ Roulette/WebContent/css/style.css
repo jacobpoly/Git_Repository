@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+/* CSS Document */
+/* Common */
+@font-face{font-family:'NanumGothic';
+	src:url('../fonts/NanumGothic.eot'); src:local('☺'),url('../fonts/NanumGothic.woff') format('woff'),url('../fonts/NanumGothic.ttf') format('truetype');
+	font-style: normal;	font-weight: normal;}
+
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select{margin: 0; padding:0;}
+body,input,textarea,select,button,table{font-size: 12px; font-family: "돋움", "굴림";}
+html, body {width: 100%; height: 100%; min-height: 100%; margin: 0; padding: 0;}
+img,fieldset{border:0;}
+ul,ol{list-style: none; padding: 0;}
+
+/*Layout*/
+#wrap {position:relative; width:390px; height:650px; margin: 0 auto; padding: 0; background-color: #FFF;}
+#header {width:390px; height:147px; background:url('../images/top.png'); text-indent:-10000em; overflow:hidden;}
+#step1 {width:390px; height:139px; background:url('../images/step1.png');}
+
+/*Content*/
+.step1_input input {margin:60px 0 0 106px; padding:0 5px; width:210px; height:28px; font:22px 'NanumGothic'; font-weight:bold; border:none; background:transparent;}
+.btn_join {margin:10px auto 0; width:82px; height:26px; background:url('../images/btn_join.png'); cursor:pointer; text-indent:-10000em; overflow:hidden;}
+.btn_join:hover {background-position:0 -26px;}
+#roulette_wrap {position:relative; width:390px; height:325px; background:url('../images/step2.png'); overflow:hidden;}
+#point_arrow {position:absolute; top:44px; left:184px; width:22px; height:38px; background:url('../images/roulette_arrow.png');}
+	/*Satrt BT*/
+#bt_start {position:absolute; top:146px; left:162px; width:67px; height:68px; background:url('../images/btn_start.png'); z-index:11; text-indent:-10000em; overflow:hidden;}
+#bt_start.on {background-position:0 -68px; cursor:pointer;}
+#bt_start.on:hover {background-position:0 -136px;}
+	/*룰렛 돌림판*/
+#roulette_wrap canvas {margin-top:58px;} 
+canvas.rouletcanvas_1 {margin-left:73px; width:245px; height:245px;}/*기본 룰렛  background:url('../images/roulette_base.png');*/
+	/*결과*/
+.rouletcanvas_2, .rouletcanvas_3, .rouletcanvas_4 {position:absolute; top:55px; left:71px; width:249px; height:249px; display:none;}
+.rouletcanvas_2 {background:url('../images/roulette_win.png'); z-index:20;}/*당첨*/
+.rouletcanvas_3 {background:url('../images/roulette_next.png'); z-index:20; text-indent:-10000em; overflow:hidden;}/*꽝*/
+.rouletcanvas_4 {background:url('../images/roulette_finish.png'); z-index:20; text-indent:-10000em; overflow:hidden;}/*재접속*/
+.rouletcanvas_2 p {margin:118px auto; font:20px 'NanumGothic'; color:#333; font-weight:bold; line-height:130%; text-align:center;}
+.rouletcanvas_2 p span {display:inline-block; width:185px; color:#ff4000;}
+
+/*Footer*/
+#footer {width:390px; height:39px; background:url('../images/bottom.png'); text-indent:-10000em; overflow:hidden;}
