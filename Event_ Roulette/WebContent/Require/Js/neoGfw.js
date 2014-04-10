@@ -90,11 +90,62 @@ var rouletGame = {
 		ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, w, h);
 
+		
+		
+		var j = 0;
+		var aa = Array();
+		for (var i = 0; i < wheelNum; i++) {
+			
+			iconArray[i] = new Image();			
+			iconArray[i].src = icons[i];
+			
+			angle = startAngle + i * arc;
+			
+		    
+			ctx.fillStyle = colors[i];
+			ctx.beginPath();
+
+			ctx.arc(w_h, w_h, w_h, angle, angle + arc, false);
+			ctx.arc(w_h, w_h, 0, angle + arc, angle, true);
+			ctx.fill();
+
+			ctx.save();
+			
+			
+			iconArray[i].onload = function () {				
+				
+				angle = startAngle + j * arc;
+				
+			    ctx.fillStyle = ctx.createPattern(iconArray[j++], 'no-repeat');
+			    
+			    ctx.arc(w_h, w_h, w_h, angle, angle + arc, false);
+				ctx.arc(w_h, w_h, 0, angle + arc, angle, true);
+			    
+				var  a = w_h + Math.cos(angle + arc / 30) * img_Radius;
+				var  b = w_h + Math.sin(angle + arc / 30) * img_Radius;
+				var  c = angle + arc / 2 + Math.PI / 2;				
+				ctx.translate(a, b);				
+			    ctx.rotate(c); 
+			    
+			    ctx.fill();
+				
+				ctx.restore();
+			}
+		}
+		
+		
+		
+		
+		
+		/*
 		for (var i = 0; i < wheelNum; i++) {
 
 			angle = startAngle + i * arc;
 			iconArray[i] = new Image();
 			
+			//iconArray[i].src = icons[i]; 
+		    //ctx.fillStyle = ctx.createPattern(iconArray[i], 'no-repeat') ;
+		    
 			ctx.fillStyle = colors[i];
 			ctx.beginPath();
 
@@ -109,29 +160,26 @@ var rouletGame = {
 		//	ctx.shadowOffsetX = -1;
 		//	ctx.shadowOffsetY = -1;
 		//	ctx.shadowBlur = 0;
-		
+			
+			
+			
 			iconArray[i].src = icons[i]; 
 		    ctx.fillStyle = ctx.createPattern(iconArray[i], 'no-repeat') ;
 		    
+		    
 			var  a = w_h + Math.cos(angle + arc / 30) * img_Radius;
 			var  b = w_h + Math.sin(angle + arc / 30) * img_Radius;
-			var  c = angle + arc / 2 + Math.PI / 2;
-				
-			ctx.translate(a, b);
-				
-//			console.log("a::"+ a);
-//			console.log("b::"+ b);
-//			console.log("c::"+ c);
-
-//			console.log( iconArray[i]);
+			var  c = angle + arc / 2 + Math.PI / 2;				
+			ctx.translate(a, b);				
 		    ctx.rotate(c); 
+		    
 			ctx.fill();
 			
-			//	text = titleArray[i];
-			//	ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
-	
 			ctx.restore();
+		
 		}
+		*/
+		
 
 	},
 	

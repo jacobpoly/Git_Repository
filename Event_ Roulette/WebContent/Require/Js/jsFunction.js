@@ -1,10 +1,13 @@
 /**
  * 
  */
+/*
 $(window).load(function() { InitRoulet(); 
+alert("1");
 	});
+*/	
 $(document).ready(function() { 	InitRoulet();
-	
+
 	var event_yn = $("#event_yn").val();
 	
 	if (event_yn == 'N') {
