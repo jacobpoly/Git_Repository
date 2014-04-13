@@ -96,7 +96,6 @@ public class Event_Service {
 	}
 
 	// 확률 계산 계산 (상품 리스트, 재학생 총, 응모자 수, 가중치)
-	@Transactional
 	double[] productPer(int[] product_Arr, int student_total,int student_enter, double addTimePer) {
 
 		System.out.println("응모자 수 :: " + student_enter);
@@ -108,6 +107,7 @@ public class Event_Service {
 		if (student_total != student_enter ){
 			student_per = ((double) 1 / (student_total - student_enter)) * 100;
 		}
+		
 		System.out.println("student_per :: " + student_per + " 남은 학생의 확률");
 		System.out.println(" (student_total - student_enter)  :: "	+ (student_total - student_enter) + " 남은 학생 수");
 
@@ -118,8 +118,7 @@ public class Event_Service {
 
 				product_per = ((double) product_Arr[y] / 1) * 100; // 0개 일때 확률
 																	// 연산
-				System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "
-						+ product_Arr[y] + " 개수");
+				System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "	+ product_Arr[y] + " 개수");
 				// System.out.println("if  :: "+ product_Total);
 
 				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per)));
@@ -127,8 +126,7 @@ public class Event_Service {
 				System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
 
 			} else { // 한개 이상의 상품의 확률
-				System.out.println("product_Arr[" + y + "] 남은 상품  :: "
-						+ product_Arr[y]);
+				System.out.println("product_Arr[" + y + "] 남은 상품  :: "	+ product_Arr[y]);
 				// System.out.println("else :: " + product_Total);
 
 				product_per = ((double) product_Arr[y] / product_Total) * 100;
@@ -144,10 +142,10 @@ public class Event_Service {
 		}
 		
 		
-		
 		return result;
 	}
 
+	
 	// 확률 연산 처리 // 상품 확률 // 상품 리스트
 	Map<String, Object> win_process(double[] productPers, int[] product) {
 
@@ -171,6 +169,8 @@ public class Event_Service {
 				
 				result.put("result", changedTime(i));
 				result.put("result_no", i);
+				
+				// 데이터 점검~~
 				
 				return result;
 
@@ -197,12 +197,44 @@ public class Event_Service {
 		return result;
 		
 	}
+	
 	@Transactional
-	public Map<String, Object> op_Result(String client_code, String msg) throws Exception {
+	Map<String, Object> tran_chek(Map<String, Object> winPro, EventVO eventVO) throws Exception{
+		
+		try {
+			event_dao.ups_product_sub(eventVO); // 상품 을 차감 한다.
+			System.out.println("정상 처리");
+			
+		} catch (Exception e) {
+				// 예외 가 발생할 경우, 전달되는 값은 꽝으로 처리 한다. 
+				// 당첨 정보도 꽝으로 처리한다.
+			
+		System.out.println("예외 발생");
+		
+		winPro = null;  // 새로 초기화
+		
+		eventVO.setProduct_no(7); // 새로 셋팅
+		
+		winPro.put("result", changedTime(7));
+		winPro.put("result_no", 7);
+		
+		}
+		finally{	// 예외 발생하나 안하나 응모자 입력값, 응모자 수를 차감한다 
+			
+			System.out.println("finally 진입");
+			event_dao.ins_eventMsg(eventVO); // 응모자 정보 입력
+			event_dao.ups_targerCnt_sub(eventVO); // 응모자 차감
+			System.out.println("finally 완료");
+		}
+		return winPro;
+	}
+	
+	@Transactional
+	public Map<String, Object> op_Result(String client_code, String msg, int client_mem_code) throws Exception {
 
 		int[] product_Arr = null;
 		double[] resultPer = null;
-		EventVO eventVO = null;
+		EventVO eventVO = new EventVO();
 		Map<String, Object>  winPro  = new HashMap<>();
 		
 		if (client_code != null || client_code !="") {
@@ -216,10 +248,27 @@ public class Event_Service {
 			int student_enter = progressDataVO.getEnter_cnt();
 			double addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO	.getEs_time()) * 100 * 0.1;
 
-			resultPer =  productPer(product_Arr, student_total, student_enter, addTimePer);
+			resultPer =  productPer(product_Arr, student_total, student_enter, addTimePer); // 상품들의 확률 연산 구하기 
 			
-			winPro =win_process(resultPer, product_Arr); // 확률 처리 후
+			winPro = win_process(resultPer, product_Arr); // 확률 처리 후
+
+			// insert 할 정보 셋
 		
+			eventVO.setClient_code(client_code);
+			eventVO.setClient_mem_code(client_mem_code);
+			eventVO.setEvent_message(msg);
+			eventVO.setProduct_no((int) winPro.get("result_no"));
+			eventVO.setWin_yn("Y");
+			/*
+			eventVO.setFirst_reg_dttm(first_reg_dttm);
+			eventVO.setFirst_reg_ip(first_reg_ip);
+			eventVO.setFirst_reg_mem_code(first_reg_mem_code);
+			eventVO.setStudent_stt_code(student_stt_code);
+			*/
+			
+			
+										
+			winPro =	tran_chek(winPro, eventVO);	// 한번 더 체크
 		}
 		return winPro;
 	}

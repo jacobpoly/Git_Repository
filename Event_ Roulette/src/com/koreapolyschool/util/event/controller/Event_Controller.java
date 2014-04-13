@@ -54,6 +54,7 @@ public class Event_Controller {
 		// 세션 추가 
 		HttpSession session = request.getSession(true);
 		session.setAttribute("client_code", studentVO.getClient_code());
+		session.setAttribute("client_mem_code", studentVO.getClient_mem_code());
 			    
 			 	if (studentVO.getEnter_yn().equals("N") ) {
 					// 미 응모자
@@ -89,7 +90,8 @@ public class Event_Controller {
 		System.out.println("memo  ::"+  request.getSession().getAttribute("memo"));
 		
 	Map<String, Object> result_map = event_Service.op_Result((String) request.getSession().getAttribute("client_code"),
-																								(String) request.getSession().getAttribute("memo")	);  // 캠퍼스의 확률을 연산
+																						(String) request.getSession().getAttribute("memo"),
+																						 (int) request.getSession().getAttribute("client_mem_code"));  // 캠퍼스의 확률을 연산
 	
 	System.out.println(result_map.get("result"));
 	System.out.println(result_map.get("result_no"));
