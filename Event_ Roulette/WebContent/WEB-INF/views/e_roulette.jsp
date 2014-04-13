@@ -17,6 +17,9 @@
 <body>
 	<form id="event_form" class="event_form">
 	<input type="hidden" id="event_yn" class="event_yn" name="event_yn" value="${event_yn }">
+	<input type="hidden" id="result" class="result" name="result">
+	<input type="hidden" id="result_no" class="result_no" name="result_no">
+	
 	<div id="wrap">
 
 		<!-- Header -->

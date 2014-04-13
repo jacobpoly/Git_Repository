@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.koreapolyschool.util.event.service.Event_Service;
 import com.koreapolyschool.util.event.view.GenericExcelView;
 import com.koreapolyschool.util.event.vo.EventVO;
 import com.koreapolyschool.util.event.vo.ExcelVO;
+import com.koreapolyschool.util.event.vo.ProductVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
 
@@ -32,22 +34,26 @@ public class Event_Controller {
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
 	
+	private EventVO eventVO = new EventVO();
+	
 	private final Logger log = Logger.getLogger(this.getClass());   
 	
 	@RequestMapping("/e_gamestart.do")
-	public ModelAndView gamestart() throws Exception{   
+	public ModelAndView gamestart(HttpServletRequest request) throws Exception{   
 	//	log.info("================ Method Name : gamestart"); 
 		
 		ModelAndView start_mav = new ModelAndView("e_roulette");  
-		
-		HashMap<String, String> params = new HashMap<>();		
-		
 		String member_code = "09110400";  //  코드  학번 
 
+		
 		if (member_code != null || member_code !="") {
 			
-			 	studentVO = event_Service.mem2client(member_code);
-			
+		studentVO = event_Service.mem2client(member_code);
+		eventVO.setClient_code(studentVO.getClient_code());
+		
+		// 세션 추가 
+		HttpSession session = request.getSession(true);
+		session.setAttribute("client_code", studentVO.getClient_code());
 			    
 			 	if (studentVO.getEnter_yn().equals("N") ) {
 					// 미 응모자
@@ -63,93 +69,41 @@ public class Event_Controller {
 			    
 		} else {
 			System.out.println("member_code is null");
-			start_mav.addObject("event_yn", "Y");
+			start_mav.addObject("event_yn", "Y");   // 미지원자 
 		}
 		return  start_mav;   
 		
 	}
-	/*
-	//@RequestMapping("/e_participation.do") // 참여 하기
-	public ModelAndView participation(HttpServletRequest req){   // 참여하기를 클릭하면, 게임 스타트 버튼 활성화, 참여하기 버튼 비활성화, 메모 readOnly
-		
-		
-		
-		String memo = "";
-		
-		memo =  req.getParameter("memo");
-		
-		System.out.println("memo :: "+ memo);
-		
-		ModelAndView part_mav = new ModelAndView("e_roulette");
-		
-		EventVO event_vo = new EventVO(); 
-		
-			
+	@RequestMapping("/e_participation.do")   // 참여하기  룰렛 기본 데이터 대입 
+	public ModelAndView getJson(HttpServletRequest request) throws Exception{  
+		  ModelAndView mv = new ModelAndView("jsonView1");  
+		  HttpSession session =  request.getSession();
+			session.setAttribute("memo",  request.getParameter("memo"));
+		 
+		  return mv;
+		 } 
 	
-	// 버튼 클릭 활성화
-		part_mav.addObject("bt_start", "on");
+	@RequestMapping("/e_start_btn.do")
+	public ModelAndView result(HttpServletRequest request) throws Exception {
 		
+		System.out.println("memo  ::"+  request.getSession().getAttribute("memo"));
 		
-		return  part_mav;   
-
-	}
-
-*/
-	@RequestMapping("/e_result.do")
-	public ModelAndView result() {
-		
-		
-		
-		
-		
-		
-		
-													// 정지 버튼이 클릭시, 현재 각도가 몫이 0일때 까지만 진행 하며, 몫이 0일때 발생하는 컨트롤러 이다. 
-													// 확률을 연산 후, 
-													// 당첨된 인덱스 번호로 정지 해야될 각도를 랜덤하게 추출한다.
-													// 서서히 천천히 회전 할 회전 수를 랜덤으로 4~6바퀴 정도 연산을 하며, 
-													// 각도의 변화 정도로 시간을 구한다.
-													// 구해진 시간 동안 서서히 돌며, 멈춘다.
-		
-	ModelAndView result_mav = new ModelAndView();
+	Map<String, Object> result_map = event_Service.op_Result((String) request.getSession().getAttribute("client_code"),
+																								(String) request.getSession().getAttribute("memo")	);  // 캠퍼스의 확률을 연산
 	
-		
+	System.out.println(result_map.get("result"));
+	System.out.println(result_map.get("result_no"));
+	
+	ModelAndView result_mav = new ModelAndView("jsonView1");
+	
+	result_mav.addObject("result", result_map);
 	
 	return result_mav;
 		
 	}
-	//@RequestMapping("/jsonTest.do")
-	@RequestMapping("/e_participation.do")
-	public ModelAndView getJson(HttpServletRequest request) throws Exception{  
-		  ModelAndView mv = new ModelAndView();  
-		  
-		  String memo = request.getParameter("memo");
-		  System.out.println("memo :: "+ memo);
-		  List<String> list = new ArrayList<String>();
-		  list.add("객체1");
-		  list.add("객체2");
-		  list.add("객체3");
-		  list.add("객체4");
-		  list.add("객체5");
-		  
-		  Map<String, String> map = new HashMap<String, String>();
-		  map.put("num", "10");
-		  map.put("name", "hyunjo");
-		  map.put("id", "systemddc");
-		  map.put("age", "33");
-		  map.put("job", "developer");
-		  
-		  mv.addObject("obj1", list); 
-		  mv.addObject("obj2", map);
-		  
-		  // {"obj1":["객체1","객체2","객체3","객체4","객체5"],"obj2":{"id":"systemddc","num":"10","age":"33","name":"hyunjo","job":"developer"}}
-		  
-		  mv.setViewName("jsonView1"); // bean으로 정의 된 뷰를 사용한다.
-		  return mv;
-		 } 
 	
 	@RequestMapping(value = "/excel.do")
-	public View selectCombo(@RequestParam Map<String, String> params,
+	public View selectExcel(@RequestParam Map<String, String> params,
 
 			Map<String, Object> modelMap) throws Exception {
 
@@ -170,7 +124,7 @@ public class Event_Controller {
 		colName.add("주소");
 		colName.add("연락처");
 
-		modelMap.put("excelName", "test");
+		modelMap.put("excelName", "event_excel");
 		modelMap.put("colName", colName);
 		modelMap.put("colValue", colValue);
 		

@@ -1,11 +1,7 @@
 /**
  * 
  */
-/*
-$(window).load(function() { InitRoulet(); 
-alert("1");
-	});
-*/	
+
 $(document).ready(function() { 	InitRoulet();
 
 	var event_yn = $("#event_yn").val();
@@ -17,22 +13,29 @@ $(document).ready(function() { 	InitRoulet();
 		$("#point_arrow").show();
 		$("#rouletcanvas_3").hide();
 
-		$('.btn_join').click(function() {
+		$('.btn_join').click(function() {		// 참여하기 
 			if (confirm("정말 참여 하시겠습니까?") == true){    //확인
 
-				$("#memo").attr("disabled",true);
+				$("#memo").attr("readonly",true);  // 데이터 전송 할때는 readonly로 사용
 				$(".btn_join").unbind("click");
 				
 				ActionSubmit('e_participation', 'event_form');
 
 					$("#bt_start").attr('class', 'on');
 
-				$("#bt_start").click(function(){
+				$("#bt_start").click(function(){		// 시작버튼
 				
 						$("#bt_start").attr('class', '');
-						
 						$("#bt_start").unbind("click"); 
+						
+						ActionSubmit('e_start_btn', 'event_form');  // 확률 연산 
 				
+					
+						/*
+						 * 
+						 * 응답 데이터 입력 구간
+				
+							*/
 						rouletGame_start();
 						
 				});
@@ -51,10 +54,6 @@ $(document).ready(function() { 	InitRoulet();
 	}
 
 });
-
-function test (){
-	alert("${event_yn}");  // el 테스트
-}
 
 function emptyRoulette(){
 	

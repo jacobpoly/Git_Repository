@@ -190,7 +190,9 @@ var rouletGame = {
 
 	 slow_spinAngleStart = 5.625; 			// 각도 지정 값
 	 slow_spinTime = 0;
-	 slow_spinTimeTotal = 3560;  // 처리 값
+	 slow_spinTimeTotal = $("#result").val();  // 처리 값
+	 
+	 alert(slow_spinTimeTotal);
 	 
 	// console.log("slow_spinTimeTotal  :: "+  slow_spinTimeTotal) ;  // 처리 값
 	 
