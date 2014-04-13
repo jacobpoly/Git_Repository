@@ -4,6 +4,7 @@
 
 <mapper namespace="event_ns">
 
+<!-- member_code -> client_code 변경  -->
 	<select id="sel_mem2client" parameterType="str" resultType="studentVO">
 	
 	SELECT	CASE WHEN ENTER_CNT > 0 THEN 'Y' ELSE 'N' END ENTER_YN				
@@ -23,6 +24,7 @@
 	</select>
 	
 	 
+	<!-- 진행 데이터 재학생 재학생 수, 응모자 수, 가중치 연산 데이터 (cs, es) --> 
 	 <select id="sel_progressData" parameterType="str" resultType="progressDataVO">
 	 SELECT	
 	 		A.in_college											
@@ -50,6 +52,7 @@
 	 
 	 </select>
 
+<!-- 모든 상품 리스트 출력  -->
 	<select id="sel_product_list" parameterType="str" resultType="productVO">
 		SELECT	 C.PRODUCT_NO					-- INT
 			, D.PRODUCT_NAME				-- NVARCHAR(30)
@@ -63,6 +66,7 @@
 		AND		B.CLIENT_CODE = #{client_code}
 	</select>
 
+<!--  상품 번호의 대한 정보 출력 -->
 	<select id="sel_product" parameterType="h_map" resultType="productVO">
 		SELECT	C.PRODUCT_NO			-- INT
 			, D.PRODUCT_NAME		-- NVARCHAR(30)
@@ -77,20 +81,23 @@
 		AND		D.PRODUCT_NO =#{product_no}
 	</select>
 	
-	<select id="sel_excel_list" resultType="studentVO">
-	SELECT	A.MEMBER_CODE [MEMBER_CODE]
-		, A.MEMBER_NAME [MEMBER_NAME]
-		, A.STUDENT_STT [STUDENT_STT]
-		, A.CLIENT_NAME [CLIENT_NAME]
-		, A.CLASS_NAME [CLASS_NAME]
-		, A.COURSE_NAME [COURSE_NAME]
-		, A.PRODUCT_NAME [PRODUCT_NAME]
-		, A.LOG_DTTM [LOG_DTTM]
-		, A.FIRST_REG_DTTM [FIRST_REG_DTTM]
-		, A.EVENT_MESSAGE [EVENT_MESSAGE]
-		, A.EVENT_ENTER_YN [EVENT_ENTER_YN]
-		, A.STUDENT_ADDR [STUDENT_ADDR]
-		, A.MOTHER_HANDPHONE_NO [MOTHER_HANDPHONE_NO]
+	<!-- 엑셀 출력 -->
+	<select id="sel_excel_list" resultType="excelVO">
+	SELECT
+		ISNULL(A.MEMBER_CODE , '')[MEMBER_CODE]
+		,ISNULL( A.MEMBER_NAME , '')[NAME]
+		,ISNULL(  A.STUDENT_STT , '')[EDU_STATE]
+		,ISNULL( A.CLIENT_NAME , '')[CAMPUS_NAME]
+		, ISNULL( A.CLASS_NAME , '')[CLASS_NAME]
+		, ISNULL( A.COURSE_NAME , '')[AFFILIATE]
+		, ISNULL( A.PRODUCT_NAME , '')[PRODUCT]
+		, A.LOG_DTTM [LOGIN_DATE]
+		, A.FIRST_REG_DTTM [PARTICIPATION]
+		, ISNULL( A.EVENT_MESSAGE , '')[EVENT_MSG]
+		, ISNULL( A.EVENT_ENTER_YN, '') [ENTER_YN]
+		, ISNULL( A.STUDENT_ADDR, '') [ADDRESS]
+		, ISNULL( A.MOTHER_HANDPHONE_NO , '')[PHONE]
+		
 	FROM (
 			SELECT	C.MEMBER_CODE
 					, G2_KEMS.dbo.FN_SYD_GET_LOCALE_VALUE(C.N_LOCALE_CODE,'KR') [MEMBER_NAME]
@@ -137,6 +144,7 @@
 	
 	</select>
 	
+	<!-- 최종 insert -->
 	<insert id="ins_eventMsg" parameterType="eventVO">
 	
 		INSERT	INTO DBO.TB_MKB_EVENT_ENTER (
@@ -153,7 +161,7 @@
 								)	
 		VALUES	(1, 1, #{client_mem_code}, #{product_no}, #{win_yn}, #{event_message}, #{student_stt_code}, GETDATE(), #{first_reg_mem_code}, #{first_reg_ip})
 	</insert>
-	
+	<!-- 상품 수 차감  -->
 	<update id="ups_product_sub" parameterType="eventVO">
 		UPDATE	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT
 				SET		LEFT_PRODUCT_CNT = LEFT_PRODUCT_CNT - 1			-- INT
@@ -167,6 +175,7 @@
 		AND		EVENT_SCHEDULE_SEQ = 1
 	</update>
 	
+	<!-- 응모자 차감  -->
 	<update id="ups_targerCnt_sub" parameterType="eventVO">
 	
 	UPDATE	DBO.TB_MKB_EVENT_CLIENT				

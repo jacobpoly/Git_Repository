@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.koreapolyschool.util.event.vo.EventVO;
+import com.koreapolyschool.util.event.vo.ExcelVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
 
@@ -19,7 +20,7 @@ public class Event_Dao {
 	private SqlSession session;
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
-	private List<StudentVO> stList;
+	private List<ExcelVO> stList;
 	private List<ProgressDataVO> pgList;
 	
 	public StudentVO sel_mem2client(String member_code) throws Exception{
@@ -73,7 +74,7 @@ public class Event_Dao {
 		return progressDataVO;
 	}
 	
-	public List<StudentVO>  sel_excel_list () throws Exception{
+	public List<ExcelVO>  sel_excel_list () throws Exception{
 		
 		
 		stList = session.selectList("event_ns.sel_excel_list");

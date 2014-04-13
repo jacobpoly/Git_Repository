@@ -18,6 +18,7 @@
 		<typeAlias alias="eventVO"  type="com.koreapolyschool.util.event.vo.EventVO"/>
 		<typeAlias alias="productVO"  type="com.koreapolyschool.util.event.vo.ProductVO"/>
 		<typeAlias alias="studentVO"  type="com.koreapolyschool.util.event.vo.StudentVO"/>
+		<typeAlias alias="excelVO"  type="com.koreapolyschool.util.event.vo.ExcelVO"/>
 	</typeAliases> 
 	
 	<!--  

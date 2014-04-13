@@ -37,6 +37,8 @@ var msg = "";
 var timefunc_start = "";
 var timefunc_stop = "";
 var temp =0 ;
+var setTimeout_cnt =15;   // 룰렛 회전 속도 
+
 
 function InitRoulet() {
 
@@ -188,7 +190,7 @@ var rouletGame = {
 
 	 slow_spinAngleStart = 5.625; 			// 각도 지정 값
 	 slow_spinTime = 0;
-	 slow_spinTimeTotal = 3650;  // 처리 값
+	 slow_spinTimeTotal = 3560;  // 처리 값
 	 
 	// console.log("slow_spinTimeTotal  :: "+  slow_spinTimeTotal) ;  // 처리 값
 	 
@@ -216,7 +218,7 @@ slow_RWheel : function () {
     
     startAngle += (spinAngle * Math.PI / 90);     
     
-    setTimeout( function() {rouletGame.slow_RWheel();}, 30 );
+    setTimeout( function() {rouletGame.slow_RWheel();}, setTimeout_cnt );
     
     rouletGame.drawRouletWheel();	        		
 },
@@ -227,7 +229,7 @@ slow_RWheel : function () {
 
 		spinAngleStart = 5.625;
 		spinTime = 0;
-		spinTimeTotal = 4000;
+		spinTimeTotal = 1; // 디폴트 값
 		// spinTimeTotal = Math.random() * 3 + 4 * 1000;
 
 
@@ -246,7 +248,7 @@ slow_RWheel : function () {
 
 		if (msg == 'start') { // start
 			
-			    timefunc_start = setTimeout(function() {rouletGame.rotateWheel(msg);}, 30);
+			    timefunc_start = setTimeout(function() {rouletGame.rotateWheel(msg);}, setTimeout_cnt);
 		}
 		spinCount += 1;
 
@@ -265,7 +267,7 @@ slow_RWheel : function () {
 			//	console.log("spinTime  :: " + spinTime);
 		}
 			else if (spinCount % 32 != 0 && msg == 'stop'){
-			   timefunc_stop = setTimeout(function() {rouletGame.rotateWheel(msg);}, 30);
+			   timefunc_stop = setTimeout(function() {rouletGame.rotateWheel(msg);}, setTimeout_cnt);
 		}
 			
 				rouletGame.drawRouletWheel();

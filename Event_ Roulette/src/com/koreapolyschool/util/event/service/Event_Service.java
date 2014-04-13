@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.koreapolyschool.util.event.dao.Event_Dao;
 import com.koreapolyschool.util.event.vo.EventVO;
+import com.koreapolyschool.util.event.vo.ExcelVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
 
@@ -20,7 +21,7 @@ public class Event_Service {
 	private Event_Dao event_dao;
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
-	private List<StudentVO> stList;
+	private List<ExcelVO> stList;
 	private List<ProgressDataVO> pgList;
 	
 	// 맴버코드 클라이언트코드로 변환
@@ -41,12 +42,12 @@ public class Event_Service {
 	public List<ProgressDataVO> product_list(HashMap<String, String> params) throws Exception  {
 		
 		pgList = event_dao.sel_product_list(params);
-			 
+		
 			 return pgList;
 	}
 	
 	// 엑셀 데이터 추출
-	public List<StudentVO> excel_list () throws Exception{
+	public List<ExcelVO> excel_list () throws Exception{
 		
 		stList = event_dao.sel_excel_list();
 		

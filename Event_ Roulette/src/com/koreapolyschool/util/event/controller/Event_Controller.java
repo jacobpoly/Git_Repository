@@ -3,6 +3,7 @@ package com.koreapolyschool.util.event.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.View;
 import com.koreapolyschool.util.event.service.Event_Service;
 import com.koreapolyschool.util.event.view.GenericExcelView;
 import com.koreapolyschool.util.event.vo.EventVO;
+import com.koreapolyschool.util.event.vo.ExcelVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
 
@@ -38,29 +40,14 @@ public class Event_Controller {
 		
 		ModelAndView start_mav = new ModelAndView("e_roulette");  
 		
+		HashMap<String, String> params = new HashMap<>();		
 		
-		List<StudentVO> stlist = event_Service.excel_list();
-		System.out.println(stlist.get(0).getEnter_yn());
-		
-		HashMap<String, String> params = new HashMap<>();
-
-		params.put("client_code", "1234");
-		params.put("product_no", "1");
-		
-		
-		List<ProgressDataVO> pglist = event_Service.product_list(params);
-		
-	System.out.println(pglist);
-		
-		
-		
-	/*
 		String member_code = "09110400";  //  코드  학번 
 
 		if (member_code != null || member_code !="") {
 			
 			 	studentVO = event_Service.mem2client(member_code);
-			    //progressDataVO = event_Service.progressData(studentVO.getClient_code());
+			
 			    
 			 	if (studentVO.getEnter_yn().equals("N") ) {
 					// 미 응모자
@@ -78,8 +65,6 @@ public class Event_Controller {
 			System.out.println("member_code is null");
 			start_mav.addObject("event_yn", "Y");
 		}
-	*/
-		start_mav.addObject("event_yn", "N");
 		return  start_mav;   
 		
 	}
@@ -164,34 +149,32 @@ public class Event_Controller {
 		 } 
 	
 	@RequestMapping(value = "/excel.do")
-
 	public View selectCombo(@RequestParam Map<String, String> params,
 
 			Map<String, Object> modelMap) throws Exception {
 
 		List<String> colName = new ArrayList<String>();			// 컬럼
+		
+		List<ExcelVO> colValue =  event_Service.excel_list();
 
-		colName.add("1번");
-		colName.add("2번");
-		colName.add("3번");
-		colName.add("4번");
-		colName.add("5번");
-
-
-		List<String[]> colValue = new ArrayList<String[]>();
-
-
-		String[] arr1 = { "11111", "22222", "33333", "44444", "55555" };		// 데이터
-		String[] arr2 = { "aaaaa", "bbbbb", "ccccc", "ddddd", "eeeee" };
-		String[] arr3 = { "가가가", "나나나", "다다다", "라라라", "마마마" };
-
-		colValue.add(arr1);
-		colValue.add(arr2);
-		colValue.add(arr3);
+		colName.add("학번");
+		colName.add("이름");
+		colName.add("교육 상태");
+		colName.add("캠퍼스명");
+		colName.add("소속과정");
+		colName.add("이벤트 상품");
+		colName.add("로그인일시");
+		colName.add("이벤트 응모 일시");
+		colName.add("이벤트 메시지");
+		colName.add("이벤트 응모여부");
+		colName.add("주소");
+		colName.add("연락처");
 
 		modelMap.put("excelName", "test");
 		modelMap.put("colName", colName);
 		modelMap.put("colValue", colValue);
+		
+		
 
 
 		return new GenericExcelView();
