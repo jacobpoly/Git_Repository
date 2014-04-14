@@ -26,12 +26,12 @@ public class Event_Dao {
 	private List<ProgressDataVO> pgList;
 	
 	
-	public StudentVO sel_mem2client(String member_code) throws Exception{
+	public StudentVO sel_mem2client(String client_mem_code) throws Exception{
 		
-		if (member_code != null || member_code != "" ) {
+		if (client_mem_code != null || client_mem_code != "" ) {
 			
 			
-			studentVO =	session.selectOne("event_ns.sel_mem2client", member_code);
+			studentVO =	session.selectOne("event_ns.sel_mem2client", client_mem_code);
 		}else{
 			System.out.println(" member_code is null ");
 		}

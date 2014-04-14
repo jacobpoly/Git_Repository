@@ -23,9 +23,9 @@ var iconArray = Array();
 var icons = ["images/roulette_goods01.png", "images/roulette_goods02.png" , "images/roulette_goods03.png", "images/roulette_goods04.png" , "images/roulette_goods05.png", "images/roulette_goods06.png","images/roulette_goods07.png", "images/roulette_goods08.png"];
 
 
-var colors=["#48D1CC","#FFFFFF","#48D1CC","#FFFFFF","#48D1CC","#FFFFFF","#48D1CC","#FFFFFF"];
+var colors=["#34BCBC","#FFFFFF","#34BCBC","#FFFFFF","#34BCBC","#FFFFFF","#34BCBC","#FFFFFF"];
 
-var sample = [ "KPSmall 상품권 5만 원권", "KPSmall 상품권 3만 원권", "KPSmall 상품권 1만 원권", "자석 책갈피", "폴리 기념품", "다음 기회에", "e-POLY 6개월 기본과목 이용권", "KPSmall 상품권 10만원" ];
+//var sample = [ "KPSmall 상품권 5만 원권", "KPSmall 상품권 3만 원권", "KPSmall 상품권 1만 원권", "자석 책갈피", "폴리 기념품", "다음 기회에", "e-POLY 6개월 기본과목 이용권", "KPSmall 상품권 10만원" ];
 var no = 0;
 var canvas = null;
 var w = 0;
@@ -37,17 +37,17 @@ var msg = "";
 var timefunc_start = "";
 var timefunc_stop = "";
 var temp =0 ;
-var setTimeout_cnt =15;   // 룰렛 회전 속도 
+var setTimeout_cnt =16;   // 룰렛 회전 속도 
 
 
 function InitRoulet() {
 
 	var title = Array();
 
-	no = sample.length;
+	no = icons.length;
 
 	for (var i = 0; i < parseInt(no); i++) {
-		title[i] = sample[i];
+		title[i] = icons[i];
 	}
 	rouletGame.readyGame(title);
 }
@@ -135,54 +135,6 @@ var rouletGame = {
 			}
 		}
 		
-		
-		
-		
-		
-		/*
-		for (var i = 0; i < wheelNum; i++) {
-
-			angle = startAngle + i * arc;
-			iconArray[i] = new Image();
-			
-			//iconArray[i].src = icons[i]; 
-		    //ctx.fillStyle = ctx.createPattern(iconArray[i], 'no-repeat') ;
-		    
-			ctx.fillStyle = colors[i];
-			ctx.beginPath();
-
-			ctx.arc(w_h, w_h, w_h, angle, angle + arc, false);
-			ctx.arc(w_h, w_h, 0, angle + arc, angle, true);
-			ctx.fill();
-
-			ctx.save();
-			
-			//alert("test"+i);
-			// 아이콘 채우기로 변경
-		//	ctx.shadowOffsetX = -1;
-		//	ctx.shadowOffsetY = -1;
-		//	ctx.shadowBlur = 0;
-			
-			
-			
-			iconArray[i].src = icons[i]; 
-		    ctx.fillStyle = ctx.createPattern(iconArray[i], 'no-repeat') ;
-		    
-		    
-			var  a = w_h + Math.cos(angle + arc / 30) * img_Radius;
-			var  b = w_h + Math.sin(angle + arc / 30) * img_Radius;
-			var  c = angle + arc / 2 + Math.PI / 2;				
-			ctx.translate(a, b);				
-		    ctx.rotate(c); 
-		    
-			ctx.fill();
-			
-			ctx.restore();
-		
-		}
-		*/
-		
-
 	},
 	
 	slow_Wheel : function() { // 멈출 지점 지정하는 회전
@@ -190,9 +142,16 @@ var rouletGame = {
 
 	 slow_spinAngleStart = 5.625; 			// 각도 지정 값
 	 slow_spinTime = 0;
-	 slow_spinTimeTotal = $("#result").val();  // 처리 값
-	 
-	 alert(slow_spinTimeTotal);
+
+	 if ( $("#result").val() != null || $("#result").val() != "" ) {
+		 slow_spinTimeTotal = $("#result").val();  // 처리 값
+		 
+		 console.log("slow_spinTimeTotal :: "+ slow_spinTimeTotal );
+	}
+	 else{
+		 consoel.log(" 꽝");
+		 slow_spinTimeTotal = (Math.random() * (4040 - 3920 + 1)) + 3920;
+	 }
 	 
 	// console.log("slow_spinTimeTotal  :: "+  slow_spinTimeTotal) ;  // 처리 값
 	 
@@ -208,7 +167,6 @@ slow_RWheel : function () {
 	//temp +=1;
 	
 	if(slow_spinTime >= slow_spinTimeTotal) {
-		
 		
 		rouletGame.stopRotateWheel();
 	    
@@ -295,41 +253,44 @@ slow_RWheel : function () {
 	stopRotateWheel : function() {
 
 		clearTimeout(rouletGame.slow_RWheel);   // 회전  정지
-
+/*
 		var degrees = 0;
 
 		var arcd = 0;
 		var index = 0;
-
+*/
 	//	console.log("================================");
 
 		
 	//	console.log("startAngle :: "+ startAngle);
 		
-		degrees = startAngle * 180 / Math.PI + 90;
+	//	degrees = startAngle * 180 / Math.PI + 90;
 		
 	//	console.log("degrees :: "+ degrees);
 		
-		arcd = arc * 180 / Math.PI;
+	//	arcd = arc * 180 / Math.PI;
 		
 	//	console.log("arcd :: "+ arcd);
 
-		index = Math.floor((360 - degrees % 360) / arcd);
-		
-	
+		//index = Math.floor((360 - degrees % 360) / arcd);
 		ctx.save();
-		var text = titleArray[index];
 		
-	//	console.log("index :: "+index);
-	//	console.log("titleArray[index] :: "+ titleArray[index]);
+		var text = $("#result_txt").val();
+		var text_no = $("#result_no").val();
+	
+		console.log("parseInt(tes_no :: "+	parseInt(tes_no));
+	console.log("text :: "+ text);
 		
+		var text = $("result_txt").val();
+		
+		if (parseInt(tes_no) < 7) {		// 꽝이 아닐 때만 룰렛 2 를 보여주기
+			$("#rouletcanvas_2").show();
+			$("#rouletcanvas_2").find("span").text(text);
 
-//		$("#roulet_result").show();
-//		$("#r_td").html("<h3>" + text + "</h3>");
-		
+		}else{		// 꽝
+			$("#rouletcanvas_3").show();
+		}
 
-		$("#rouletcanvas_2").show();
-		$("#rouletcanvas_2").find("span").text(text);
 
 	}
 };

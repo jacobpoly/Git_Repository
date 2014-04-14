@@ -29,7 +29,7 @@ ul,ol{list-style: none; padding: 0;}
 #bt_start.on:hover {background-position:0 -136px;}
 	/*룰렛 돌림판*/
 #roulette_wrap canvas {margin-top:58px;} 
-canvas.rouletcanvas_1 {margin-left:73px; width:245px; height:245px;}/*기본 룰렛  background:url('../images/roulette_base.png');*/
+canvas.rouletcanvas_1 {margin-left:73px; width:245px; height:245px;  background-image:url('../images/roulette_base.png');}/*기본 룰렛 background-image:url('../images/roulette_base.png');*/
 	/*결과*/
 .rouletcanvas_2, .rouletcanvas_3, .rouletcanvas_4 {position:absolute; top:55px; left:71px; width:249px; height:249px; display:none;}
 .rouletcanvas_2 {background:url('../images/roulette_win.png'); z-index:20;}/*당첨*/

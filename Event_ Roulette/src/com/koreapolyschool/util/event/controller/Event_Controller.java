@@ -1,6 +1,5 @@
 package com.koreapolyschool.util.event.controller;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,85 +33,112 @@ public class Event_Controller {
 	private Event_Service event_Service;
 	private StudentVO studentVO;
 	private ProgressDataVO progressDataVO;
-	
-	private EventVO eventVO = new EventVO();
-	
-	private final Logger log = Logger.getLogger(this.getClass());   
-	
-	@RequestMapping("/e_gamestart.do")
-	public ModelAndView gamestart(HttpServletRequest request) throws Exception{   
-	//	log.info("================ Method Name : gamestart"); 
-		
-		ModelAndView start_mav = new ModelAndView("e_roulette");  
-		String member_code = "09110400";  //  코드  학번 
 
+	private EventVO eventVO = new EventVO();
+
+	private final Logger log = Logger.getLogger(this.getClass());
+
+	@RequestMapping("/e_gamestart.do")
+	public ModelAndView gamestart(HttpServletRequest request) throws Exception {
+		// log.info("================ Method Name : gamestart");
+
+		ModelAndView start_mav = new ModelAndView("e_roulette");
+		String client_mem_code = "152549";  // 91797 코드 학번   //152546    152547  152548
 		
-		if (member_code != null || member_code !="") {
+	//    byte[] decoded = Base64.decodeBase64("dGVzdA==");  // decode
+
+		if (client_mem_code != null || client_mem_code != "") {
+
+			studentVO = event_Service.mem2client(client_mem_code);
+			eventVO.setClient_code(studentVO.getClient_code());
+
+			// 세션 추가
+			HttpSession session = request.getSession(true);
+			session.setAttribute("client_code", studentVO.getClient_code());
+			session.setAttribute("client_mem_code", studentVO.getClient_mem_code());
+			session.setAttribute("student_stt_code", studentVO.getStudent_stt_code());
+			session.setAttribute("in_college_yn", studentVO.getIn_college_yn());
 			
-		studentVO = event_Service.mem2client(member_code);
-		eventVO.setClient_code(studentVO.getClient_code());
-		
-		// 세션 추가 
-		HttpSession session = request.getSession(true);
-		session.setAttribute("client_code", studentVO.getClient_code());
-		session.setAttribute("client_mem_code", studentVO.getClient_mem_code());
-			    
-			 	if (studentVO.getEnter_yn().equals("N") ) {
-					// 미 응모자
-					start_mav.addObject("event_yn", studentVO.getEnter_yn());
-			 	}else if(studentVO.getEnter_yn().equals("Y")){
-					// 응모자
-					//start_mav.addObject("event_yn", studentVO.getEnter_yn());
-			 		start_mav.addObject("event_yn", "N");
-				}else{
-					// 지원 되질 않는 학생
-					start_mav.addObject("event_yn", "Y");
-				}
-			    
+
+			System.out.println("??" + studentVO.getStudent_stt_code());
+
+			if (studentVO.getEnter_yn().equals("N")) {
+				// 미 응모자
+
+				// 재학생인 경우 휴학생인 경우 구분,,
+
+				start_mav.addObject("event_yn", studentVO.getEnter_yn());
+			} else if (studentVO.getEnter_yn().equals("Y")) {
+				// 응모자
+				// start_mav.addObject("event_yn", studentVO.getEnter_yn());
+				start_mav.addObject("event_yn", "N");
+			} else {
+				// 지원 되질 않는 학생
+				start_mav.addObject("event_yn", "Y");
+			}
+
 		} else {
 			System.out.println("member_code is null");
-			start_mav.addObject("event_yn", "Y");   // 미지원자 
+			start_mav.addObject("event_yn", "Y"); // 미지원자
 		}
-		return  start_mav;   
-		
+
+
+		return start_mav;
+
 	}
-	@RequestMapping("/e_participation.do")   // 참여하기  룰렛 기본 데이터 대입 
-	public ModelAndView getJson(HttpServletRequest request) throws Exception{  
-		  ModelAndView mv = new ModelAndView("jsonView1");  
-		  HttpSession session =  request.getSession();
-			session.setAttribute("memo",  request.getParameter("memo"));
-		 
-		  return mv;
-		 } 
-	
+
+	@RequestMapping("/e_participation.do")
+	// 참여하기 룰렛 기본 데이터 대입
+	public ModelAndView getJson(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView1");
+		HttpSession session = request.getSession();
+		session.setAttribute("memo", request.getParameter("memo"));
+
+		return mv;
+	}
+
 	@RequestMapping("/e_start_btn.do")
 	public ModelAndView result(HttpServletRequest request) throws Exception {
+
+		System.out.println("memo  ::"
+				+ request.getSession().getAttribute("memo"));
 		
-		System.out.println("memo  ::"+  request.getSession().getAttribute("memo"));
+		ModelAndView result_mav = new ModelAndView("jsonView1");
+		Map<String, Object> result_map = new HashMap<>(); 
+		String  student_stt_code = (String) request.getSession().getAttribute("student_stt_code");
 		
-	Map<String, Object> result_map = event_Service.op_Result((String) request.getSession().getAttribute("client_code"),
-																						(String) request.getSession().getAttribute("memo"),
-																						 (int) request.getSession().getAttribute("client_mem_code"));  // 캠퍼스의 확률을 연산
-	
-	System.out.println(result_map.get("result"));
-	System.out.println(result_map.get("result_no"));
-	
-	ModelAndView result_mav = new ModelAndView("jsonView1");
-	
-	result_mav.addObject("result", result_map);
-	
-	return result_mav;
+		System.out.println("student_stt_code ::"+ student_stt_code);
 		
+			System.out.println("진입");
+					result_map = event_Service.op_Result(
+									(String) request.getSession().getAttribute("client_code"),
+									(String) request.getSession().getAttribute("memo"),
+									(int) request.getSession().getAttribute("client_mem_code"),
+									student_stt_code); // 캠퍼스의 확률을 연산
+
+			System.out.println(result_map.get("result"));
+			System.out.println(result_map.get("result_no"));
+		
+		result_mav.addObject("result", result_map);
+		
+
+		System.out.println("1 ::"+result_map.get("result"));
+		System.out.println("2 ::"+result_map.get("result_no"));
+		System.out.println("3 ::"+result_map.get("result_txt"));
+		
+		
+		return result_mav;
+
 	}
-	
+
 	@RequestMapping(value = "/excel.do")
 	public View selectExcel(@RequestParam Map<String, String> params,
 
-			Map<String, Object> modelMap) throws Exception {
+	Map<String, Object> modelMap) throws Exception {
 
-		List<String> colName = new ArrayList<String>();			// 컬럼
-		
-		List<ExcelVO> colValue =  event_Service.excel_list();
+		List<String> colName = new ArrayList<String>(); // 컬럼
+
+		List<ExcelVO> colValue = event_Service.excel_list();
 
 		colName.add("학번");
 		colName.add("이름");
@@ -129,43 +156,9 @@ public class Event_Controller {
 		modelMap.put("excelName", "event_excel");
 		modelMap.put("colName", colName);
 		modelMap.put("colValue", colValue);
-		
-		
-
 
 		return new GenericExcelView();
 
 	}
 
-	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+}

@@ -5,7 +5,25 @@ public class ProductVO { // 상품 데이터
 	private int product_no;
 	private String product_name;
 	private int left_product_cnt;
+	private int left_product_total;
+	private int product_cnt;
 	private int product_total;
+	
+	public int getLeft_product_total() {
+		return left_product_total;
+	}
+
+	public void setLeft_product_total(int left_product_total) {
+		this.left_product_total = left_product_total;
+	}
+
+	public int getProduct_cnt() {
+		return product_cnt;
+	}
+
+	public void setProduct_cnt(int product_cnt) {
+		this.product_cnt = product_cnt;
+	}
 
 	public int getProduct_no() {
 		return product_no;

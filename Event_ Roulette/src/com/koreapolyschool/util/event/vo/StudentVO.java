@@ -8,7 +8,17 @@ public class StudentVO {		// 학생의 클라이언트 코드
 	private int member_code;	// 학번
 	private String client_code;		// 캠퍼스 코드
 	private int client_mem_code;	// 캠퍼스 학번
+	private String student_stt_code;  // 학생 상태 코드
 	
+	
+	public String getStudent_stt_code() {
+		return student_stt_code;
+	}
+
+	public void setStudent_stt_code(String student_stt_code) {
+		this.student_stt_code = student_stt_code;
+	}
+
 	public String getEnter_yn() {
 		return enter_yn;
 	}

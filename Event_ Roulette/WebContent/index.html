@@ -4,6 +4,85 @@
 <meta charset="UTF-8">
 <title>index page</title>
 </head>
+<script type="text/javascript">
+/*
+var setEventProcess = function () {
+    var frame = window.frames[$(EventWindow.getEl().dom).find("iframe:eq(0)").attr("name")];
+    frame.setOption({
+
+        // 닫기 이벤트
+        onClose: function () {
+            EventWindow.hide();
+        },
+
+        // 이벤트 완료 이벤트
+        onCompleteLogin: function () {
+            EventWindow.hide();                
+        }
+
+    });
+}
+//alert("reload");
+//location.reload();
+alert("EventWindow");
+if (EventWindow == null) {
+
+    EventWindow = new Ext.Window({
+        renderTo: Ext.get("form1"),
+        width: 420,
+        height: 680,
+        closeAction: "hide",
+        modal: false,
+        hidden: true,
+        layout: "fit",
+        resizable: false,
+        border: false,
+        header: false,
+        closable: true,
+        draggable: true,
+        autoScroll: false,
+        autoLoad: {
+            url: "http://192.168.100.247:8081/Event__Roulette/e_gamestart.do;
+            mode: "iframe",
+            showMask: true,
+            callback: function() {
+                setEventProcess();
+            }
+        },
+        animateTarget: "animateTarget",
+        listeners: {
+            render: function() {
+                $(this.getEl().dom).find("iframe").css("scrolling", "no");
+            }
+        }
+
+    });
+
+} else {
+    setTimeout(function () { setEventProcess(); }, 1000);
+}
+
+EventWindow.show();
+}
+*/
+
+//2. html 레이어 팝업.
+
+function test(){
+var v_frm = document.getElementsByName("test")[0];
+
+//var _member_code = document.getElementById("event_member_code").value;
+//alert(_member_code);
+//document.getElementById("_member_code").value = _member_code;
+
+v_frm.target = "ifr_form"; //target을 iframe으로
+v_frm.action = "http://192.168.100.247:8081/Event__Roulette/e_gamestart.do";
+document.getElementById("layer_ifr_form").style.display = "block";
+v_frm.submit();
+
+}
+</script>
+
 <body>
 
 <a href="#" onClick="window.open('roulette.html','content','width=400, height=650, menubar=no, status=no, toolbar=no, resizable=0')">룰렛 html(미적용)</a><br>
@@ -11,6 +90,12 @@
 <a href="#" onClick="window.open('e_roulette.html','content','width=400, height=650, menubar=no, status=no, toolbar=no, resizable=0')">룰렛 html(자바 스크립트 적용)</a><br>
 <br>
 <a href="#" onClick="window.open('e_gamestart.do','content','width=400, height=650, menubar=no, status=no, toolbar=no, resizable=no')">룰렛 jsp</a>
+
+<input type="button" onclick="test()"/>
+
+<iframe name="test" src="http://192.168.100.39:8080/Event__Roulette/e_gamestart.do" width="700" height="800" scrolling="auto"> </iframe>
+
+
 
 
 </body>

@@ -62,20 +62,17 @@ function ActionSubmit(action, form_name) {
 				//console.log(json.result);
 				console.log(json.result.result);
 				console.log(json.result.result_no);
-				
+				console.log(json.result.result_txt);
 				// 7 이면 꽝으로 처리 
 
 				$("#result").val(json.result.result);
 				$("#result_no").val(json.result.result_no);
-				
-				// console.log(dataType); // success 출력
-
-			//	console.log("json.obj1[1] :: " + json.obj1[1]);
+				$("#result_txt").val(json.result.result_txt);
 
 			}else{
 				
-				console.log(msg);
-				console.log(json);
+			//	console.log(msg);
+			//	console.log(json);
 				
 			}
 		}

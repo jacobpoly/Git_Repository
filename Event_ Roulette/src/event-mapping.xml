@@ -4,24 +4,29 @@
 
 <mapper namespace="event_ns">
 
-<!-- member_code -> client_code 변경  -->
-	<select id="sel_mem2client" parameterType="str" resultType="studentVO">
+<!-- member_code >> client_code 변경 <수정> -->
+	<select id="sel_mem2client" parameterType="str" resultType="studentVO"> <!-- STUDENT_STT_BRN  03 (재학생) -->
 	
-	SELECT	CASE WHEN ENTER_CNT > 0 THEN 'Y' ELSE 'N' END ENTER_YN				
-			, ENTER_CNT													
-			, CASE WHEN A.STUDENT_STT_BRN = '03' THEN 'Y' ELSE 'N' END NOW_YN	
-			, A.MEMBER_CODE													
-			, A.CLIENT_CODE													
-			, A.CLIENT_MEM_CODE													
-		FROM	(
-			SELECT	COUNT(*) ENTER_CNT, A.CLIENT_MEM_CODE, B.MEMBER_CODE, B.CLIENT_CODE, STUDENT_STT_BRN
-			FROM	DBO.TB_MKB_EVENT_ENTER A
-			INNER	JOIN G2_KCMS.dbo.VW_STA_STUDENT B ON A.CLIENT_MEM_CODE = B.CLIENT_MEM_CODE
-			WHERE	A.EVENT_NO = 1
-			AND		B.MEMBER_CODE = #{member_code}
-			GROUP	BY A.CLIENT_MEM_CODE, B.MEMBER_CODE, B.CLIENT_CODE, STUDENT_STT_BRN
-		)A
+SELECT	CASE WHEN ENTER_CNT > 0 THEN 'Y' ELSE 'N' END ENTER_YN				-- NCHAR(1)
+		, ENTER_CNT															-- INT
+		, CASE WHEN A.STUDENT_STT_BRN = '03' THEN 'Y' ELSE 'N' END IN_COLLEGE_YN	-- NCHAR(1)
+		, A.MEMBER_CODE														-- NVARCHAR(10)
+		, A.CLIENT_CODE														-- NVARCHAR(10)
+		, A.CLIENT_MEM_CODE													-- INT
+		-- 20140414(EDIT)
+		, A.STUDENT_STT_CODE
+FROM	(
+			
+			SELECT	A.CLIENT_MEM_CODE, A.MEMBER_CODE, A.CLIENT_CODE, A.STUDENT_STT_BRN, A.STUDENT_STT_CODE
+					, CASE WHEN B.CLIENT_MEM_CODE IS NULL THEN 0 ELSE 1 END ENTER_CNT
+			FROM	G2_KCMS.dbo.VW_STA_STUDENT A
+			LEFT	OUTER JOIN DBO.TB_MKB_EVENT_ENTER B ON A.CLIENT_MEM_CODE = B.CLIENT_MEM_CODE AND B.EVENT_NO = 1
+			WHERE	1=1
+			AND		A.CLIENT_MEM_CODE = #{client_mem_code} -- 응모 이력이 없는 친구
+			
+)A
 	</select>
+
 	
 	 
 	<!-- 진행 데이터 재학생 재학생 수, 응모자 수, 가중치 연산 데이터 (cs, es) --> 
@@ -51,19 +56,30 @@
 	)B ON 1=1
 	 
 	 </select>
+	 
 
-<!-- 모든 상품 리스트 출력  -->
+<!-- 모든 상품 리스트 출력  <수정> -->
 	<select id="sel_product_list" parameterType="str" resultType="productVO">
-		SELECT	 C.PRODUCT_NO					-- INT
-			, D.PRODUCT_NAME				-- NVARCHAR(30)
-			, C.LEFT_PRODUCT_CNT			-- INT
-		FROM	DBO.TB_MKB_EVENT A
-		INNER	JOIN DBO.TB_MKB_EVENT_CLIENT B ON A.EVENT_NO = B.EVENT_NO
-		INNER	JOIN DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT C ON B.EVENT_NO = C.EVENT_NO AND B.CLIENT_CODE = C.CLIENT_CODE
-		INNER	JOIN DBO.TB_MKA_PRODUCT D ON C.PRODUCT_NO = D.PRODUCT_NO
-		WHERE	1=1
-		AND		A.EVENT_NO = 1
-		AND		B.CLIENT_CODE = #{client_code}
+	SELECT	D.PRODUCT_NAME											-- NVARCHAR(30)
+		, C.LEFT_PRODUCT_CNT									-- INT
+		, C.PRODUCT_CNT									-- INT
+		, (	SELECT	SUM(LEFT_PRODUCT_CNT)
+			FROM	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT 
+			WHERE	EVENT_NO = 1 
+			AND		EVENT_SCHEDULE_SEQ = 1 
+			AND		CLIENT_CODE = #{client_code}) AS LEFT_PRODUCT_TOTAL	-- INT
+		, (	SELECT	SUM(PRODUCT_CNT)
+			FROM	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT 
+			WHERE	EVENT_NO = 1 
+			AND		EVENT_SCHEDULE_SEQ = 1 
+			AND		CLIENT_CODE =#{client_code}) AS PRODUCT_TOTAL	-- INT
+FROM	DBO.TB_MKB_EVENT A
+INNER	JOIN DBO.TB_MKB_EVENT_CLIENT B ON A.EVENT_NO = B.EVENT_NO
+INNER	JOIN DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT C ON B.EVENT_NO = C.EVENT_NO AND B.CLIENT_CODE = C.CLIENT_CODE
+INNER	JOIN DBO.TB_MKA_PRODUCT D ON C.PRODUCT_NO = D.PRODUCT_NO
+WHERE	1=1
+AND		A.EVENT_NO = 1
+AND		B.CLIENT_CODE = #{client_code}
 	</select>
 
 <!--  상품 번호의 대한 정보 출력 -->
@@ -79,6 +95,7 @@
 		AND		A.EVENT_NO = 1
 		AND		B.CLIENT_CODE =#{client_code}
 		AND		D.PRODUCT_NO =#{product_no}
+		
 	</select>
 	
 	<!-- 엑셀 출력 -->
@@ -163,15 +180,16 @@
 	</insert>
 	<!-- 상품 수 차감  -->
 	<update id="ups_product_sub" parameterType="eventVO">
-		UPDATE	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT
-				SET		LEFT_PRODUCT_CNT = LEFT_PRODUCT_CNT - 1			-- INT
-				, LAST_UPD_DTTM = GETDATE()						-- DATETIME
-				, LAST_UPD_MEM_CODE = #{first_reg_mem_code}		-- NVARCHAR(10)
-				, LAST_UPD_IP = #{first_reg_ip}					-- NVARCHAR(23)
+	UPDATE	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT	
+		
+		SET		LEFT_PRODUCT_CNT = LEFT_PRODUCT_CNT - 1			-- INT
+		, LAST_UPD_DTTM = GETDATE()						-- DATETIME
+		, LAST_UPD_MEM_CODE = #{first_reg_mem_code}			-- NVARCHAR(10)
+		, LAST_UPD_IP =#{first_reg_ip}						-- NVARCHAR(23)
 		WHERE	EVENT_NO = 1									
-		AND		PRODUCT_NO = #{product_no}									-- INT
-		AND		CLIENT_CODE = #{client_code}							-- NVARCHAR(10)
-		AN	D		LEFT_PRODUCT_CNT > 0
+		AND		PRODUCT_NO = #{product_no}										-- INT
+		AND		CLIENT_CODE =#{client_code}						-- NVARCHAR(10)
+		AND		LEFT_PRODUCT_CNT > 0
 		AND		EVENT_SCHEDULE_SEQ = 1
 	</update>
 	
@@ -179,13 +197,14 @@
 	<update id="ups_targerCnt_sub" parameterType="eventVO">
 	
 	UPDATE	DBO.TB_MKB_EVENT_CLIENT				
-		SET		LEFT_TARGET_CNT = LEFT_TARGET_CNT - 1
+	SET		LEFT_TARGET_CNT = LEFT_TARGET_CNT - 1
 		, LAST_UPD_DTTM = GETDATE()
-		, LAST_UPD_MEM_CODE =#{first_reg_mem_code}
-		, LAST_UPD_IP =#{first_reg_ip}
-		WHERE	EVENT_NO = 1
-		AND		CLIENT_CODE =  #{client_code}		-- NVARCHAR(10)
-		AND		LEFT_TARGET_CNT > 0
+		, LAST_UPD_MEM_CODE = #{first_reg_mem_code}
+		, LAST_UPD_IP = #{first_reg_ip}
+	WHERE	EVENT_NO = 1
+	AND		CLIENT_CODE = #{client_code}			-- NVARCHAR(10)
+	AND		LEFT_TARGET_CNT > 0
+	
 	</update>
 
 </mapper>
