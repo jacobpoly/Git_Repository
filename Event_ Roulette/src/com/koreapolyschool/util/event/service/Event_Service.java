@@ -140,11 +140,11 @@ public class Event_Service {
 			} else {
 				// System.out.println(i + 1 + " 차 시도 ");
 
-				if (i == productPers.length - 1) {
+				if (i >=productPers.length-1) {  // 7이상이면 꽝처리 0~6 상품  7 꽝 
 
 					// System.out.println(productPers.length);
 
-					System.out.println("다음 기회에~~");
+					System.out.println("다음 기회에~~!!!");
 
 					result.put("result", changedTime(7));
 					result.put("result_no", 7);
@@ -230,12 +230,12 @@ public class Event_Service {
 		if (eventVO.getStudent_stt_code().equals("31")
 				|| eventVO.getStudent_stt_code().equals("32")
 				|| eventVO.getStudent_stt_code().equals("33")
-				|| eventVO.getStudent_stt_code().equals("34")) {
+				|| eventVO.getStudent_stt_code().equals("34")) {	//재학생 기준 ~
 			try {
 				
 				System.out.println("정상 상품 번호 :: "+ eventVO.getProduct_no());
 				
-				event_dao.ups_product_sub(eventVO); // 상품 을 차감 한다.
+				event_dao.ups_product_sub(eventVO); // 상품 을 차감 할때 예외 발생하면 꽝으로 처리
 				System.out.println("정상 처리");
 
 			} catch (Exception e) {
@@ -243,20 +243,20 @@ public class Event_Service {
 				// 당첨 정보도 꽝으로 처리한다.
 
 				System.out.println("예외 발생");
-
+				eventVO.setWin_yn("N");
 				eventVO.setProduct_no(8); 
 				winPro.put("result", changedTime(7));
 				winPro.put("result_no", 7);
 			} finally { // 예외 발생하나 안하나 응모자 입력값, 응모자 수를 차감한다
 
-				event_dao.ups_targerCnt_sub(eventVO); // 응모자 차감
+				event_dao.ups_targerCnt_sub(eventVO); // 응모자 차감 재학생일때 무조건 응모자 차감 
 				System.out.println("finally 완료");
 			}
 
 		}
 
 		System.out.println("추가");
-		event_dao.ins_eventMsg(eventVO); // 응모자 정보 입력
+		event_dao.ins_eventMsg(eventVO); // 응모자 정보 입력 // 재학생이건 아니건 무조건 정보 입력 
 
 		return winPro;
 	}
@@ -298,7 +298,7 @@ public class Event_Service {
 
 				resultPer = productPer(product_Arr, student_total, student_enter, addTimePer, client_code); //  +addTimePer; 상품들의 확률 연산
 														
-				winPro = win_process(resultPer, product_Arr); // 확률 처리 후
+				winPro = win_process(resultPer, product_Arr); // 당첨 처리  후
 
 				// insert 할 정보 셋
 
@@ -333,7 +333,7 @@ public class Event_Service {
 			winPro.put("result_no", 7);
 			winPro.put("result_txt", "다음 기회에");
 			
-		winPro = tran_chek(winPro, eventVO);
+		   winPro = tran_chek(winPro, eventVO);
 			
 		}
 		return winPro;

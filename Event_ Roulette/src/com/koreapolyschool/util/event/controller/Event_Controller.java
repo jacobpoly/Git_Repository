@@ -42,7 +42,7 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = 	"145524";  // 91797 코드 학번   //152546    152547  152548
+		String client_mem_code = 	"152548";  // 91797 코드 학번   //152546    152547  152548
 				
 		System.out.println("client_mem_code :: " +client_mem_code);
 				
