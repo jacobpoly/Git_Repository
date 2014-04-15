@@ -1,5 +1,6 @@
 package com.koreapolyschool.util.event.service;
 
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -259,14 +260,21 @@ public class Event_Service {
 	}
 
 	@Transactional
-	public Map<String, Object> op_Result(String client_code, String msg,	int client_mem_code, String student_stt_code) throws Exception {
+	public Map<String, Object> op_Result(String client_code, String msg,	int client_mem_code, String student_stt_code , String ip) throws Exception {
 
 		int[] product_Arr = null;
 		double[] resultPer = null;
 		String[] product_Name = null;
 		EventVO eventVO = new EventVO();
 		Map<String, Object> winPro = new HashMap<>();
-
+		
+		    eventVO.setFirst_reg_ip(ip);
+			eventVO.setFirst_reg_mem_code(client_mem_code);
+			eventVO.setClient_code(client_code);
+			eventVO.setClient_mem_code(client_mem_code);
+			eventVO.setEvent_message(msg);
+			eventVO.setStudent_stt_code(student_stt_code);
+	
 		if (student_stt_code.equals("31") || student_stt_code.equals("32")
 				|| student_stt_code.equals("33")
 				|| student_stt_code.equals("34")) { // 재학생 일 경우만
@@ -296,32 +304,18 @@ public class Event_Service {
 				// insert 할 정보 셋
 
 				// 재학생 기준
-
+				
 				if ((int) winPro.get("result_no") < 7) { // 당첨
+					
 
-					/*
-					 * eventVO.setFirst_reg_dttm(first_reg_dttm);
-					 * eventVO.setFirst_reg_ip(first_reg_ip);
-					 * eventVO.setFirst_reg_mem_code(first_reg_mem_code);
-					 */
-					eventVO.setClient_code(client_code);
-					eventVO.setClient_mem_code(client_mem_code);
-					eventVO.setEvent_message(msg);
+				
 					eventVO.setWin_yn("Y");
 					eventVO.setProduct_no((int) winPro.get("result_no") + 1);
-					eventVO.setStudent_stt_code(student_stt_code);
+					
 				} else {
-					/*
-					 * eventVO.setFirst_reg_dttm(first_reg_dttm);
-					 * eventVO.setFirst_reg_ip(first_reg_ip);
-					 * eventVO.setFirst_reg_mem_code(first_reg_mem_code);
-					 */
-					eventVO.setClient_code(client_code);
-					eventVO.setClient_mem_code(client_mem_code);
-					eventVO.setEvent_message(msg);
+					
 					eventVO.setWin_yn("N");
 					eventVO.setProduct_no((int) winPro.get("result_no") + 1);
-					eventVO.setStudent_stt_code(student_stt_code);
 				}
 
 				winPro = tran_chek(winPro, eventVO); // 한번 더 체크
@@ -338,21 +332,19 @@ public class Event_Service {
 
 			} // 끝
 		}
-		else{
+		else{ //재학생 제외
 			
-			eventVO.setClient_code(client_code);
-			eventVO.setClient_mem_code(client_mem_code);
-			eventVO.setEvent_message(msg);
 			eventVO.setWin_yn("N");
 			eventVO.setProduct_no(8); 
-			eventVO.setStudent_stt_code(student_stt_code);
 			
+			System.out.println("미 재학 ");
 			// 새로 셋팅 // 꽝은 0으로 추가
 
 			winPro.put("result", changedTime(7));
 			winPro.put("result_no", 7);
+			winPro.put("result_txt", "다음 기회에");
 			
-			winPro = tran_chek(winPro, eventVO);
+		winPro = tran_chek(winPro, eventVO);
 			
 		}
 		return winPro;

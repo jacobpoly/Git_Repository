@@ -1,5 +1,6 @@
 package com.koreapolyschool.util.event.controller;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,7 +44,7 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = "152549";  // 91797 코드 학번   //152546    152547  152548
+		String client_mem_code = "152548";  // 91797 코드 학번   //152546    152547  152548
 		
 	//    byte[] decoded = Base64.decodeBase64("dGVzdA==");  // decode
 
@@ -93,6 +94,16 @@ public class Event_Controller {
 		ModelAndView mv = new ModelAndView("jsonView1");
 		HttpSession session = request.getSession();
 		session.setAttribute("memo", request.getParameter("memo"));
+		
+		   String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		   
+		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown"))
+		        ip = request.getHeader("REMOTE_ADDR");
+		   
+		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown"))
+		        ip = request.getRemoteAddr();
+		    
+			session.setAttribute("ip",   ip);
 
 		return mv;
 	}
@@ -114,7 +125,8 @@ public class Event_Controller {
 									(String) request.getSession().getAttribute("client_code"),
 									(String) request.getSession().getAttribute("memo"),
 									(int) request.getSession().getAttribute("client_mem_code"),
-									student_stt_code); // 캠퍼스의 확률을 연산
+									student_stt_code,
+									(String) request.getSession().getAttribute("ip")); // 캠퍼스의 확률을 연산
 
 			System.out.println(result_map.get("result"));
 			System.out.println(result_map.get("result_no"));

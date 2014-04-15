@@ -10,7 +10,7 @@ public class EventVO { // 이벤트 응모 데이터 insert
 	private String  event_message;			
 	private String student_stt_code;	
 	private String first_reg_dttm;		
-	private String first_reg_mem_code;	
+	private int first_reg_mem_code;	
 	private String  first_reg_ip;
 	private String client_code;
 //	private int enter_cnt;
@@ -81,11 +81,11 @@ public class EventVO { // 이벤트 응모 데이터 insert
 		this.first_reg_dttm = first_reg_dttm;
 	}
 	
-	public String getFirst_reg_mem_code() {
+	public int getFirst_reg_mem_code() {
 		return first_reg_mem_code;
 	}
 	
-	public void setFirst_reg_mem_code(String first_reg_mem_code) {
+	public void setFirst_reg_mem_code(int first_reg_mem_code) {
 		this.first_reg_mem_code = first_reg_mem_code;
 	}
 	
