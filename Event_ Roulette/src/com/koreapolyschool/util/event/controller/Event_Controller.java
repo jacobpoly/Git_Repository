@@ -42,8 +42,10 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = "152548";  // 91797 코드 학번   //152546    152547  152548
-		
+		String client_mem_code = 	"145524";  // 91797 코드 학번   //152546    152547  152548
+				
+		System.out.println("client_mem_code :: " +client_mem_code);
+				
 
 		if (client_mem_code != null || client_mem_code != "") {
 
@@ -68,8 +70,8 @@ public class Event_Controller {
 				start_mav.addObject("event_yn", studentVO.getEnter_yn());
 			} else if (studentVO.getEnter_yn().equals("Y")) {
 				// 응모자
-				 start_mav.addObject("event_yn", studentVO.getEnter_yn());
-				//start_mav.addObject("event_yn", "N");
+				// start_mav.addObject("event_yn", studentVO.getEnter_yn());
+				start_mav.addObject("event_yn", "N");
 			} else {
 				// 지원 되질 않는 학생
 				start_mav.addObject("event_yn", "Y");
@@ -94,12 +96,18 @@ public class Event_Controller {
 		
 		   String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 		   
+		   System.out.println("HTTP_X_FORWARDED_FOR :: "+ip);
+		   
 		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown")){
 		        ip = request.getHeader("REMOTE_ADDR");
+		        System.out.println(" REMOTE_ADDR :: "+ ip);
+				   
 		    }
 		   
 		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown")){
 		        ip = request.getRemoteAddr();
+		        System.out.println(" :: "+ip);
+				   
 		    }
 		    
 		    System.out.println("접속 아이피 :: "+ ip);
@@ -132,14 +140,11 @@ public class Event_Controller {
 									student_stt_code,
 									(String) request.getSession().getAttribute("ip")); // 캠퍼스의 확률을 연산
 
-			System.out.println(result_map.get("result"));
-			System.out.println(result_map.get("result_no"));
-		
 		result_mav.addObject("result", result_map);
 		
-
+	int result_no	= (int)result_map.get("result_no")+1;
 		System.out.println("1 ::"+result_map.get("result"));
-		System.out.println("2 ::"+result_map.get("result_no"));
+		System.out.println("2 ::"+result_no);
 		System.out.println("3 ::"+result_map.get("result_txt"));
 		
 		
