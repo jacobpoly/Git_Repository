@@ -208,7 +208,7 @@ public class Event_Service {
 				product_per = ((double) product_Arr[y] / product_Total) * 100;
 
 				result[y] = (Double.parseDouble(String.format("%.2f",
-						(double) product_per * student_per)));// /30; ////
+						(double) product_per * student_per))) /20; ////
 																// +addTimePer;//
 																// // 당첨률 낮추기
 
