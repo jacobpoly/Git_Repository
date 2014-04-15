@@ -278,12 +278,10 @@ slow_RWheel : function () {
 		var text = $("#result_txt").val();
 		var text_no = $("#result_no").val();
 	
-		console.log("parseInt(tes_no :: "+	parseInt(tes_no));
-	console.log("text :: "+ text);
+		console.log("parseInt(text_no :: "+	parseInt(text_no));
+		console.log("text :: "+ text);
 		
-		var text = $("result_txt").val();
-		
-		if (parseInt(tes_no) < 7) {		// 꽝이 아닐 때만 룰렛 2 를 보여주기
+		if (parseInt(text_no) < 7) {		// 꽝이 아닐 때만 룰렛 2 를 보여주기
 			$("#rouletcanvas_2").show();
 			$("#rouletcanvas_2").find("span").text(text);
 

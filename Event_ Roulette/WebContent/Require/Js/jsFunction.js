@@ -43,7 +43,6 @@ $(document).ready(function() {
 
 					ActionSubmit('e_participation', 'event_form');
 
-					$("#bt_start").attr('class', 'on');
 
 					$("#bt_start").click(function() { // 시작버튼
 
@@ -51,7 +50,7 @@ $(document).ready(function() {
 						$("#bt_start").attr('class', '');
 						$("#bt_start").unbind("click");
 
-						ActionSubmit('e_start_btn', 'event_form'); // 확률 연산
+						ActionSubmit($("#event_bnt").val(), 'event_form'); // 확률 연산
 
 						rouletGame_start();
 
@@ -67,7 +66,7 @@ $(document).ready(function() {
 	} else if (event_yn == 'Y') {
 
 		emptyRoulette();
-		$("#rouletcanvas_3").show();
+		$(".rouletcanvas_4").show();
 	}
 
 	memoClick = function(memo_len) {

@@ -49,10 +49,14 @@ function ActionSubmit(action, form_name) {
 			// 통신 에러 발생시 처리
 			alert("code : " + request.status + "\r\nmessage : "
 					+ request.reponseText);
+			if (action != "e_participation") {
+				$("#result").val( (Math.random() * (4040 - 3920 + 1)) + 3920);	
+				$("#result_no").val(7);
+			}
 		},
 		success : function(msg) {
 			// 통신 성공시 처리
-			var json = $.parseJSON(msg)
+			var json = $.parseJSON(msg);
 			
 			if (action != "e_participation") {
 				
@@ -71,9 +75,13 @@ function ActionSubmit(action, form_name) {
 
 			}else{
 				
-			//	console.log(msg);
-			//	console.log(json);
-				
+				console.log(msg);
+				console.log(json);
+
+				console.log(json.on);
+				console.log(json.e_start_btn);
+				$("#event_bnt").val(json.e_start_btn);
+				$("#bt_start").attr('class', json.on);
 			}
 		}
 	});

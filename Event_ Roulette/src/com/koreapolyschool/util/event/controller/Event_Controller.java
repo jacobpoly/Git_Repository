@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,6 @@ import com.koreapolyschool.util.event.service.Event_Service;
 import com.koreapolyschool.util.event.view.GenericExcelView;
 import com.koreapolyschool.util.event.vo.EventVO;
 import com.koreapolyschool.util.event.vo.ExcelVO;
-import com.koreapolyschool.util.event.vo.ProductVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
 
@@ -46,7 +44,6 @@ public class Event_Controller {
 		ModelAndView start_mav = new ModelAndView("e_roulette");
 		String client_mem_code = "152548";  // 91797 코드 학번   //152546    152547  152548
 		
-	//    byte[] decoded = Base64.decodeBase64("dGVzdA==");  // decode
 
 		if (client_mem_code != null || client_mem_code != "") {
 
@@ -61,8 +58,8 @@ public class Event_Controller {
 			session.setAttribute("in_college_yn", studentVO.getIn_college_yn());
 			
 
-			System.out.println("??" + studentVO.getStudent_stt_code());
-
+			System.out.println("학생 상태 코드 :: " + studentVO.getStudent_stt_code());
+			System.out.println("응모 여부 :: " + studentVO.getEnter_yn());
 			if (studentVO.getEnter_yn().equals("N")) {
 				// 미 응모자
 
@@ -71,8 +68,8 @@ public class Event_Controller {
 				start_mav.addObject("event_yn", studentVO.getEnter_yn());
 			} else if (studentVO.getEnter_yn().equals("Y")) {
 				// 응모자
-				// start_mav.addObject("event_yn", studentVO.getEnter_yn());
-				start_mav.addObject("event_yn", "N");
+				 start_mav.addObject("event_yn", studentVO.getEnter_yn());
+				//start_mav.addObject("event_yn", "N");
 			} else {
 				// 지원 되질 않는 학생
 				start_mav.addObject("event_yn", "Y");
@@ -97,13 +94,20 @@ public class Event_Controller {
 		
 		   String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 		   
-		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown"))
+		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown")){
 		        ip = request.getHeader("REMOTE_ADDR");
+		    }
 		   
-		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown"))
+		    if(ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown")){
 		        ip = request.getRemoteAddr();
+		    }
+		    
+		    System.out.println("접속 아이피 :: "+ ip);
 		    
 			session.setAttribute("ip",   ip);
+			
+			mv.addObject("e_start_btn", "e_start_btn");
+			mv.addObject("on", "on");
 
 		return mv;
 	}
