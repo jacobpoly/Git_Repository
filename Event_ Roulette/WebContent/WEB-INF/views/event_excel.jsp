@@ -27,7 +27,7 @@
 		<div id="excel_div">
 			<h3>관리자 화면 엑셀 다운로드</h3>
 
-			<a href="/Event_%20Roulette/excel.do" >
+			<a href="/Event_Roulette/excel.do" >
 				<img src="images/Excel.jpg"> 이벤트 룰렛 총 결과 
 			</a>
 				
