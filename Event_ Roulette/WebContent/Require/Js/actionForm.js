@@ -19,8 +19,8 @@ function ActionSubmit(action, form_name) {
 	// if ( this._url.substring( 0, 1 ) == '/' ) this._url = Config.contextPath
 	// + this._url;
 
-	console.log("action ::" + action);
-	console.log("form_name ::" + form_name);
+	//console.log("action ::" + action);
+//	console.log("form_name ::" + form_name);
 
 	console.log($("#" + form_name));
 
@@ -35,7 +35,7 @@ function ActionSubmit(action, form_name) {
 		// "xml", "html", "script", "json" 등 지정 가능
 		// 미지정시 자동 판단
 		,
-		timeout : 30000 // 제한시간 지정
+		timeout : 300000 // 제한시간 지정
 		,
 		cache : false // true, false
 		,
@@ -49,40 +49,67 @@ function ActionSubmit(action, form_name) {
 			// 통신 에러 발생시 처리
 			alert("code : " + request.status + "\r\nmessage : "
 					+ request.reponseText);
-			if (action != "e_participation") {
+			if (action == "e_start_btn") {
 				$("#result").val( (Math.random() * (4040 - 3920 + 1)) + 3920);	
 				$("#result_no").val(7);
 			}
 		},
+		
+	     complete: function() {
+	        //통신이 완료된 후 처리
+	   
+	       },
+	       
 		success : function(msg) {
 			// 통신 성공시 처리
-			var json = $.parseJSON(msg);
 			
-			if (action != "e_participation") {
+			if (action == "e_start_btn" ) {		// start
+				var json = $.parseJSON(msg);
+					
 				
-				console.log("1 "+msg);
-				console.log("2 "+json);
+			//	console.log("1 "+msg);
+			//	console.log("2 "+json);
 				
 				//console.log(json.result);
-				console.log(json.result.result);
-				console.log(json.result.result_no);
-				console.log(json.result.result_txt);
+			//	console.log(json.result.result);
+			//	console.log(json.result.result_no);
+			//	console.log(json.result.result_txt);
 				// 7 이면 꽝으로 처리 
 
 				$("#result").val(json.result.result);
 				$("#result_no").val(json.result.result_no);
 				$("#result_txt").val(json.result.result_txt);
 
-			}else{
+			}else if(action == "e_participation"){			// 참여하기
+				var json = $.parseJSON(msg);
 				
-				console.log(msg);
-				console.log(json);
+				
+			//	console.log(msg);
+			//	console.log(json);
 
-				console.log(json.on);
-				console.log(json.e_start_btn);
+			//	console.log(json.on);
+			//	console.log(json.e_start_btn);
 				$("#event_bnt").val(json.e_start_btn);
 				$("#bt_start").attr('class', json.on);
 			}
+//			else if (action == "excel") { // 엑셀 다운로드
+//	    		//		console.log(msg);
+//	    				var msg = 'find=commoncode';
+//	    				var method = 'post';
+//	    				
+//	    			       msg = typeof msg == 'string' ? msg : jQuery.param(msg);
+//	    			        // 파라미터를 form의  input으로 만든다.
+//	    			        var inputs = '';
+//	    			        jQuery.each(msg.split('&'), function(){ 
+//	    			            var pair = this.split('=');
+//	    			            inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+//	    			        });
+//	    			        // request를 보낸다.
+//	    			        jQuery('<form action="'+ _url +'" method="'+ (method||'post') +'">'+inputs+'</form>').appendTo('body').submit().remove();
+//	    				
+//	    				$("#excel_div").unmask();
+//	    			}
+	    	
 		}
 	});
 }

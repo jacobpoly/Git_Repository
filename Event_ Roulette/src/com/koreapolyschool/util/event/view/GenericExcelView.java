@@ -1,6 +1,8 @@
 package com.koreapolyschool.util.event.view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public class GenericExcelView extends AbstractExcelView {
 
 		List<ExcelVO> colValue = (List<ExcelVO>) modelMap.get("colValue");
 
-
+		System.out.println("엑셀 그리기 시작" + getNow());
 
 		res.setContentType("application/msexcel");
 
@@ -53,7 +55,8 @@ public class GenericExcelView extends AbstractExcelView {
 		Font defaultFont = workbook.createFont();        
 		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕"); 
-
+		
+		System.out.println("엑셀 시트 생성" + getNow());
 		//제목 스타일 
 		CellStyle HeadStyle = workbook.createCellStyle(); 
 		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
@@ -92,7 +95,7 @@ public class GenericExcelView extends AbstractExcelView {
 
 		}
 
-
+		System.out.println("엑셀 메뉴 생성" + getNow());
 		// 내용 생성
 
 		for (int i = 0; i < colValue.size(); i++) {
@@ -116,6 +119,7 @@ public class GenericExcelView extends AbstractExcelView {
 			
 				
 		}
+		System.out.println("엑셀 내용 생성" + getNow());
 		
 		for (int i = 0; i < colName.size(); i++){ 
 		    sheet.autoSizeColumn(i); 
@@ -124,8 +128,16 @@ public class GenericExcelView extends AbstractExcelView {
 	
 
 			
-
+		System.out.println("엑셀 완료" + getNow());
 
 	}
 
+	
+	public String getNow() {
+		Date now = new Date(System.currentTimeMillis());
+
+		SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		
+		return simpledateformat.format(now);
+	}
 }

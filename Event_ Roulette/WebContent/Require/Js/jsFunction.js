@@ -6,12 +6,20 @@ getIDfocus = function() {
 	document.getElementById('memo').focus();
 },
 
+disEnter = function(){
+	 $("#memo").on("keyup", function(e){
+		 if(e.which==13){return false;}});
+	 },
+
 emptyRoulette = function() {
 
+//	disEnter(); 
 	$(".btn_join").unbind("click");
 	$("#rouletcanvas_1").hide();
 	$("#bt_start").hide();
 	$("#point_arrow").show();
+	$("#memo").attr("readonly", true);
+	$("#memo").css("background-color", "#cccccc");
 },
 
 $(document).ready(function() {
@@ -24,16 +32,16 @@ $(document).ready(function() {
 		$("#bt_start").show();
 		$("#point_arrow").show();
 		$("#rouletcanvas_3").hide();
-
+		
 		$('.btn_join').click(function() { // 참여하기
 
-			if (confirm("정말 참여 하시겠습니까?") == true) { // 확인
+		//	if (confirm("정말 참여 하시겠습니까?") == true) { // 확인
 
 				var memo_len = $.trim($("#memo").val()).length;
 
 				if (memo_len == 0) {
-					alert("네모를 입력해주세요");
-					memoClick(memo_len);
+					alert("내용을 입력해주세요");
+					//memoClick(memo_len);
 					return false;
 				} else {
 					$("#memo").attr("readonly", true); // 데이터 전송 할때는 readonly로
@@ -57,9 +65,9 @@ $(document).ready(function() {
 					});
 				}
 
-			} else { // 취소
-				return false;
-			}
+		//	} else { // 취소
+		//		return false;
+		//	}
 
 		});
 
@@ -67,6 +75,9 @@ $(document).ready(function() {
 
 		emptyRoulette();
 		$(".rouletcanvas_4").show();
+	}else {
+		emptyRoulette();
+		$(".rouletcanvas_3").show();
 	}
 
 	memoClick = function(memo_len) {

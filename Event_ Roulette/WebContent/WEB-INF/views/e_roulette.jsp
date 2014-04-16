@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="Require/Js/jsFunction.js"></script>
 </head>
 <body>
-	<form id="event_form" class="event_form">
+	<form id="event_form" class="event_form" onsubmit="return false;">
 	<input type="hidden" id="event_yn" class="event_yn" name="event_yn" value="${event_yn }">
 	<input type="hidden" id="event_bnt" class="event_btn" name="event_btn">
 	<input type="hidden" id="result" class="result" name="result">
@@ -30,7 +30,7 @@
 		<div id="step1">
 			<!-- 입력형역 -->
 			<div class="step1_input">
-				<input type="text" id="memo" name="memo" />
+				<input type="text" id="memo" name="memo" maxlength="30" />
 			</div>
 			<!-- BT -->
 			<p  class="btn_join">참여하기</p>
