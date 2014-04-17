@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,48 @@
 	<script type="text/javascript" src="Require/Js/neoGfw.js"></script>
 	<script type="text/javascript" src="Require/Js/actionForm.js"></script>
 	<script type="text/javascript" src="Require/Js/jsFunction.js"></script>
+	<script type="text/javascript">
+	var name = navigator.appName, 
+	ver = navigator.appVersion,
+	ver_int = parseInt(navigator.appVersion), 
+	ua = navigator.userAgent, infostr;
+//alert("버전 :: "+ ver);
+
+if(name == "Microsoft Internet Explorer"){
+
+	if(ver.indexOf("MSIE 8.0") != -1 || ver.indexOf("MSIE 7.0") != -1)  {		// 하위 브라우저
+		$(window).load(function(){
+			$("#wrap").remove();
+			$("#ie_ver").val("down");
+			//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=7;IE7;chrome=1");
+			//alert("하위");
+		});
+
+ 
+	}else{		// 지원 가능 브라우저 
+
+		$(window).load(function(){
+			$("#wrap_down").remove();
+			$("#ie_ver").val("up");
+			//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=edge;chrome=1");
+			//alert("상위");
+		});
+
+ 
+	}
+}
+else{
+
+	$(window).load(function(){
+		$("#wrap_down").remove();
+		$("#wrap").remove();
+	//$("#ie_ver").val("up");
+		//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=edge;chrome=1");
+		//alert("IE 외 브라우저");
+	});
+
+}
+</script>
 </head>
 <body>
 	<form id="event_form" class="event_form" onsubmit="return false;">
@@ -21,49 +64,19 @@
 	<input type="hidden" id="result" class="result" name="result">
 	<input type="hidden" id="result_no" class="result_no" name="result_no">
 	<input type="hidden" id="result_txt" class="result_txt" name="result_txt">
-	<div id="wrap">
+	<input type="hidden" id="ie_ver" class="ie_ver" name="ie_ver">
+<div id="wrap">
 
-		<!-- Header -->
-		<div id="header">POLY 재학생 감사 이벤트 : POLY를 생각하고 행운도 잡고! 여러분께 폴리는 어떤 의미인가요? POLY의 의미를 적고 행운도 잡으세요.</div>
-
-		<!-- Step 1 -->
-		<div id="step1">
-			<!-- 입력형역 -->
-			<div class="step1_input">
-				<input type="text" id="memo" name="memo" maxlength="30" />
-			</div>
-			<!-- BT -->
-			<p  class="btn_join">참여하기</p>
-		</div>
-
-		<!-- 룰렛-->
-		<div id="roulette_wrap">
-			<div id="point_arrow"></div>
-			<div id="bt_start" class="${bt_start}">Start</div><!-- Step1 참여하기 클릭 후 Start 버튼 활성화 class="on" 추가 -->
-
-			<!-- 기본 룰렛 -->
-			<canvas width="245" height="245" class="rouletcanvas_1" id="rouletcanvas_1"></canvas>
-
-			<!-- 당첨 -->
-			<div class="rouletcanvas_2" id="rouletcanvas_2">
-				<p><span><!-- 당첨삼품 별 변경 적용 영역 -->"KPSmall 5만원권"</span><br />당첨되셨습니다.</p>
-			</div>
-			<!-- 꽝 -->
-			<div class="rouletcanvas_3" id="rouletcanvas_3">
-				아쉽지만 또 다른 이벤트를 기대해주세요~
-			</div>
-			<!-- 재접속 -->
-			<div class="rouletcanvas_4" id="rouletcanvas_3">
-				이미 이벤트에 참여하셨습니다. 다음에 새로운 이벤트로 찾아뵙겠습니다.
-			</div>
-		</div>
-
-		<!-- Footer -->
-		<div id="footer">
-			응모기간 4월 28일 ~ 5월 19일. 당첨되신 상품은 이벤트 완료 후 소속캠퍼스로 일괄 배송됩니다. 1인 1회만 참여하실 수 있습니다.
-		</div>
-
-	</div>
+		<jsp:include page="header.jsp"/>
+		<jsp:include page="ie_edge.jsp"/>
+		<jsp:include page="footer.jsp"/>
+	
+</div>
+<div id="wrap_down">
+	<jsp:include page="header.jsp"/>
+	<jsp:include page="ie_down.jsp"/>
+	<jsp:include page="footer.jsp"/>
+</div>		
 </form>	
 </body>
 </html>

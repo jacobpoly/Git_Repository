@@ -35,7 +35,7 @@ function ActionSubmit(action, form_name) {
 		// "xml", "html", "script", "json" 등 지정 가능
 		// 미지정시 자동 판단
 		,
-		timeout : 300000 // 제한시간 지정
+		timeout : 30000 // 제한시간 지정
 		,
 		cache : false // true, false
 		,
@@ -71,9 +71,9 @@ function ActionSubmit(action, form_name) {
 			//	console.log("2 "+json);
 				
 				//console.log(json.result);
-			//	console.log(json.result.result);
-			//	console.log(json.result.result_no);
-			//	console.log(json.result.result_txt);
+				console.log(json.result.result);
+				console.log(json.result.result_no);
+				console.log(json.result.result_txt);
 				// 7 이면 꽝으로 처리 
 
 				$("#result").val(json.result.result);

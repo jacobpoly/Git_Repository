@@ -317,7 +317,7 @@ public class Event_Service {
 					winPro.put("result_txt", "다음 기회에");
 				}
 
-				winPro = tran_chek(winPro, eventVO); // 한번 더 체크
+			//	winPro = tran_chek(winPro, eventVO); // 한번 더 체크
 
 			} // 끝
 		}
@@ -333,7 +333,7 @@ public class Event_Service {
 			winPro.put("result_no", 7);
 			winPro.put("result_txt", "다음 기회에");
 			
-		   winPro = tran_chek(winPro, eventVO);
+		//   winPro = tran_chek(winPro, eventVO);
 			
 		}
 		return winPro;

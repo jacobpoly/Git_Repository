@@ -42,18 +42,107 @@ var setTimeout_cnt =16;   // 룰렛 회전 속도
 
 function InitRoulet() {
 
-	var title = Array();
+	temp = document.getElementById("rouletcanvas_1");
+	
+	if (temp.getContext) {
+		
+		var title = Array();
 
-	no = icons.length;
+		no = icons.length;
+	
+		//alert("canvas :: "+ temp);
 
-	for (var i = 0; i < parseInt(no); i++) {
-		title[i] = icons[i];
-	}
-	rouletGame.readyGame(title);
+		for (var i = 0; i < parseInt(no); i++) {
+			title[i] = icons[i];
+		}
+			rouletGame.readyGame(title);
+		}
 }
 
-function rouletGame_start(){
-	rouletGame.spinWheel('start');
+
+function result_view(text, _text_no){
+	
+	if (parseInt(_text_no) < 7) {		// 꽝이 아닐 때만 룰렛 _2 를 보여주기
+		$("#rouletcanvas_2").show();
+		$("#rouletcanvas_2").find("span").text(text);
+
+	}else{		// 꽝
+		$("#rouletcanvas_3").show();
+	}
+	
+}
+
+
+function result_stop(){
+	var _text = $("#result_txt").val();
+	var _text_no = $("#result_no").val();
+	
+	console.log("진입");
+	//console.log(_text);
+	//console.log(_text_no);
+	
+	switch (parseInt(_text_no)) {
+	case 1:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_01.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 2:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_02.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 3:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_03.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 4:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_04.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 5:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_05.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 6:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_06.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	case 7:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_07.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	default:
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_08.png)";
+		console.log(_text_no);
+		setTimeout(function(){result_view(_text, _text_no);},2000);
+		break;
+	}
+	
+}
+
+function rouletGame_start(msg){
+	
+	if (msg=="up") {		// up 호출 시 
+		
+		rouletGame.spinWheel('start');	// canvas 전용 회전 메서드
+		
+	}else if(msg =="down") {
+	//	alert("!!!!");
+	//$("#rouletcanvas_1").css('background-image', "images/roulette_ani.gif");
+		
+			// document.getElementById("result_txt").value;
+		
+		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_ani.gif)";
+		
+		setTimeout(function(){result_stop()},7000);
+		
+	}
 	return;
 }
 
@@ -281,7 +370,7 @@ slow_RWheel : function () {
 		console.log("parseInt(text_no :: "+	parseInt(text_no));
 		console.log("text :: "+ text);
 		
-		if (parseInt(text_no) < 7) {		// 꽝이 아닐 때만 룰렛 2 를 보여주기
+		if (parseInt(text_no) < 7) {		// 꽝이 아닐 때만 룰렛 _2 를 보여주기
 			$("#rouletcanvas_2").show();
 			$("#rouletcanvas_2").find("span").text(text);
 

@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/views/header.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/ie_edge.jsp=UTF-8
 encoding//WebContent/WEB-INF/views/jsonTest.jsp=UTF-8

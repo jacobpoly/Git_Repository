@@ -44,73 +44,77 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = "4812";
-		
-		if (client_mem_code != null ) {
-				
-				//request.getParameter("_client_mem_code");
-				
-				// "128906"; // 91797 코드 학번 //152546 152547 152548
+		String client_mem_code = "152565";
 
-		System.out.println("client_mem_code :: " + client_mem_code);
+		if (client_mem_code != null) {
 
-		
-		if (client_mem_code.equals("4812")) {
+			// request.getParameter("_client_mem_code");
 
-			System.out.println("관리자 엑셀");
-			
-			return new ModelAndView("event_excel");
-			
-		} else if (client_mem_code  != null || client_mem_code  !="") {
-			
-		
-			studentVO = event_Service.mem2client(client_mem_code);
-			
-				if (studentVO != null) {
+			// "128906"; // 91797 코드 학번 //152546 152547 152548
+
+			System.out.println("client_mem_code :: " + client_mem_code);
+
+			if (client_mem_code.equals("4812")) { // 관리자
+
+				System.out.println("관리자 엑셀");
+
+				return new ModelAndView("event_excel");
+
+			} else { //if (client_mem_code != null || client_mem_code != "")
+
+				studentVO = event_Service.mem2client(client_mem_code);
+
+				if (studentVO != null) { // 응모 이력 정보를 못 가지고 오는 클라이언 코드 일 경우
 					eventVO.setClient_code(studentVO.getClient_code());
-				//	System.out.println("학생~~");
-				// 세션 추가
-				HttpSession session = request.getSession(true);
-				session.setAttribute("client_code", studentVO.getClient_code());
-				session.setAttribute("client_mem_code", studentVO.getClient_mem_code());
-				session.setAttribute("student_stt_code", studentVO.getStudent_stt_code());
-				session.setAttribute("in_college_yn",studentVO.getIn_college_yn());
+					System.out.println("학생~~");
+					// 세션 추가
+					HttpSession session = request.getSession(true);
+					session.setAttribute("client_code",
+							studentVO.getClient_code());
+					session.setAttribute("client_mem_code",
+							studentVO.getClient_mem_code());
+					session.setAttribute("student_stt_code",
+							studentVO.getStudent_stt_code());
+					session.setAttribute("in_college_yn",
+							studentVO.getIn_college_yn());
 
-				System.out.println("학생 상태 코드 :: " + studentVO.getStudent_stt_code());
-				System.out.println("응모 여부 :: " + studentVO.getEnter_yn());
-				if (studentVO.getEnter_yn().equals("N")) {
-					// 미 응모자
+					System.out.println("학생 상태 코드 :: "+ studentVO.getStudent_stt_code());
+					System.out.println("응모 여부 :: " + studentVO.getEnter_yn());
+					if (studentVO.getEnter_yn().equals("N")) {
+						System.out.println("학생 : 미응모자 ");
 
-					// 재학생인 경우 휴학생인 경우 구분,,
+						start_mav.addObject("event_yn", studentVO.getEnter_yn());
+					} else if (studentVO.getEnter_yn().equals("Y")) {
+						System.out.println("학생 : 응모자 ");
 
-					start_mav.addObject("event_yn", studentVO.getEnter_yn());
-				} else if (studentVO.getEnter_yn().equals("Y")) {
-					// 응모자
-					 start_mav.addObject("event_yn", studentVO.getEnter_yn());
-					//start_mav.addObject("event_yn", "N");
-				} else {
-					// 지원 되질 않는 학생
-					start_mav.addObject("event_yn", "Y");
+						// 응모자
+						start_mav.addObject("event_yn", studentVO.getEnter_yn());
+					//	start_mav.addObject("event_yn", "N");
+					} else {
+						System.out.println("학생 : 해석 할수 없는 코드");
+
+						// 지원 되질 않는 학생
+						start_mav.addObject("event_yn", "Y");
+					}
+
+				} else { // 응모 이력 정보를 못 가지고 오는 클라이언 코드 일 경우, 응모 한 사람으로 체크한다.
+
+					System.out.println("코드는 있지만 관리자가 아니며, 해석 할수 없는 코드");
+					start_mav.addObject("event_yn", "Y"); // 미지원자
 				}
+				return start_mav;
 
-			} else {
-				System.out.println("member_code is null");
-				start_mav.addObject("event_yn", "Y"); // 미지원자
 			}
-			return start_mav;
+			/*else {  // 클라이트 코드가 존재하는 않는 사람
+				return new ModelAndView("e_roulette");
+			}*/
 
-		}else{
-			return new ModelAndView("e_roulette");
-		}
-		
-		
-		} else{
-			
+		} else {
+
 			System.out.println("널~~");
-			return null;
+			return new ModelAndView("empty");
 		}
-		
-		
+
 	}
 
 	@RequestMapping("/e_participation.do")
@@ -169,14 +173,15 @@ public class Event_Controller {
 				student_stt_code,
 				(String) request.getSession().getAttribute("ip")); // 캠퍼스의 확률을
 																	// 연산
-
-		result_mav.addObject("result", result_map);
-
 		int result_no = (int) result_map.get("result_no") + 1;
+		
+		 result_map.put("result_no",  (int) result_map.get("result_no") + 1);
 		System.out.println("1 ::" + result_map.get("result"));
 		System.out.println("2 ::" + result_no);
 		System.out.println("3 ::" + result_map.get("result_txt"));
 
+		result_mav.addObject("result", result_map);
+		
 		return result_mav;
 
 	}
@@ -185,13 +190,13 @@ public class Event_Controller {
 	public View selectExcel(@RequestParam Map<String, String> params,
 
 	Map<String, Object> modelMap) throws Exception {
-		
-	System.out.println("엑셀 시작" + getNow());
-		
+
+		System.out.println("엑셀 시작" + getNow());
+
 		List<String> colName = new ArrayList<String>(); // 컬럼
 
 		List<ExcelVO> colValue = event_Service.excel_list();
-		
+
 		System.out.println("엑셀 DB 조회 완료" + getNow());
 		colName.add("학번");
 		colName.add("이름");
@@ -217,8 +222,9 @@ public class Event_Controller {
 	public String getNow() {
 		Date now = new Date(System.currentTimeMillis());
 
-		SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		
+		SimpleDateFormat simpledateformat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss.SSS");
+
 		return simpledateformat.format(now);
 	}
 }

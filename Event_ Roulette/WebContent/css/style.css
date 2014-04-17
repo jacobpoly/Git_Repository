@@ -22,14 +22,15 @@ ul,ol{list-style: none; padding: 0;}
 .btn_join {margin:10px auto 0; width:82px; height:26px; background:url('../images/btn_join.png'); cursor:pointer; text-indent:-10000em; overflow:hidden;}
 .btn_join:hover {background-position:0 -26px;}
 #roulette_wrap {position:relative; width:390px; height:325px; background:url('../images/step2.png'); overflow:hidden;}
-#point_arrow {position:absolute; top:44px; left:184px; width:22px; height:38px; background:url('../images/roulette_arrow.png');}
+#point_arrow {position:absolute; top:44px; left:184px; width:22px; height:38px; background:url('../images/roulette_arrow.png'); z-index:10;}
 	/*Satrt BT*/
 #bt_start {position:absolute; top:146px; left:162px; width:67px; height:68px; background:url('../images/btn_start.png'); z-index:11; text-indent:-10000em; overflow:hidden;}
 #bt_start.on {background-position:0 -68px; cursor:pointer;}
 #bt_start.on:hover {background-position:0 -136px;}
 	/*룰렛 돌림판*/
-#roulette_wrap canvas {margin-top:58px;} 
-canvas.rouletcanvas_1 {margin-left:73px; width:245px; height:245px;  background-image:url('../images/roulette_base.png');}/*기본 룰렛 background-image:url('../images/roulette_base.png');*/
+.rouletcanvas_1 {position:absolute; top:58px; left:73px; width:245px; height:245px;  background-image:url('../images/roulette_base.png');}/*기본 룰렛 background-image:url('../images/roulette_base.png');*/
+ 
+
 	/*결과*/
 .rouletcanvas_2, .rouletcanvas_3, .rouletcanvas_4 {position:absolute; top:55px; left:71px; width:249px; height:249px; display:none;}
 .rouletcanvas_2 {background:url('../images/roulette_win.png'); z-index:20;}/*당첨*/

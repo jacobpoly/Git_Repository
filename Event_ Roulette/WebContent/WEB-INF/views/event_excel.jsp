@@ -25,9 +25,10 @@
 <body>
 	<form id="execl_form">
 		<div id="excel_div">
-			<h3>관리자 화면 엑셀 다운로드</h3>
+			<h3>관리자 화면 엑셀 다운로드 </h3>
 
-			<a href="/Event_Roulette/excel.do" >
+
+			<a href="${pageContext.request.contextPath}/excel.do" >
 				<img src="images/Excel.jpg"> 이벤트 룰렛 총 결과 
 			</a>
 				
