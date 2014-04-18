@@ -44,7 +44,7 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = request.getParameter("_client_mem_code");
+		String client_mem_code = request.getParameter("_client_mem_code");;
 
 		if (client_mem_code != null) {
 
@@ -142,7 +142,7 @@ public class Event_Controller {
 
 		}
 
-		//System.out.println("접속 아이피 :: " + ip);
+		System.out.println("접속 아이피 :: " + ip);
 
 		session.setAttribute("ip", ip);
 
@@ -175,11 +175,13 @@ public class Event_Controller {
 																	// 연산
 		int result_no = (int) result_map.get("result_no") + 1;
 		
-		 result_map.put("result_no",  (int) result_map.get("result_no") + 1);
+		result_map.put("result_no", result_no);
+		System.out.println("전송 결과");
+		System.out.println("===================================");
 		System.out.println("1 ::" + result_map.get("result"));
 		System.out.println("2 ::" + result_no);
 		System.out.println("3 ::" + result_map.get("result_txt"));
-
+		System.out.println("===================================");
 		result_mav.addObject("result", result_map);
 		
 		return result_mav;

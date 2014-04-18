@@ -77,49 +77,49 @@ function result_stop(){
 	var _text = $("#result_txt").val();
 	var _text_no = $("#result_no").val();
 	
-	console.log("진입");
+	//console.log("진입");
 	//console.log(_text);
 	//console.log(_text_no);
 	
 	switch (parseInt(_text_no)) {
 	case 1:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_01.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 2:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_02.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 3:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_03.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 4:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_04.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 5:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_05.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 6:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_06.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 7:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_07.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	default:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_08.png)";
-		console.log(_text_no);
+		//console.log(_text_no);
 		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	}
@@ -366,10 +366,11 @@ slow_RWheel : function () {
 		var text = $("#result_txt").val();
 		var text_no = $("#result_no").val();
 	
-		console.log("parseInt(text_no :: "+	parseInt(text_no));
-		console.log("text :: "+ text);
+	//	console.log("parseInt(text_no :: "+	parseInt(text_no));
+	//	console.log("최종결과 text :: "+ text);
+	//	console.log("상품 번호(+1)  :: "+ text_no);
 		
-		if (parseInt(text_no) < 7) {		// 꽝이 아닐 때만 룰렛 _2 를 보여주기
+		if (parseInt(text_no) < 8) {		// 상품 1~ 7 당첨  8 다음 기회에
 			$("#rouletcanvas_2").show();
 			$("#rouletcanvas_2").find("span").text(text);
 

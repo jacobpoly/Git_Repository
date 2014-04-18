@@ -73,35 +73,27 @@ public class Event_Service {
 		switch (product_num) {
 
 		case 0:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(3680, 3810); // 6개월 기본
 			break;
 		case 1:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(3440, 3560); // 10만원
 			break;
 		case 2:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(3200, 3330); // 5만원
 			break;
 		case 3:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(2960, 3090); // 3만원
 			break;
 		case 4:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(2720, 2850); // 1만원
 			break;
 		case 5:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(2480, 2610); // 자석 책갈피
 			break;
 		case 6:
-			System.out.println("상품 번호  :: " + (product_num));
 			resultTime = randomRange(2240, 2370); // 폴리 기념품
 			break;
 		default:
-			System.out.println("모두 소진 됨");
 			resultTime = randomRange(3920, 4040); // 다음 기회에
 			break;
 		}
@@ -120,9 +112,10 @@ public class Event_Service {
 														// 높으면 당첨~~
 
 				// product[i]--; // 당첨이 되면 그 상품을 차감 한다.
+				System.out.println("================================");
+				System.out.println(i +  "  인덱스 번호");
 				System.out.println(i + 1 + " 번째 상품이  당첨 되었습니다.");
-
-				System.out.println("==============");
+				System.out.println("================================");
 
 				System.out.println("회전 시간 :: " + changedTime(i));
 
@@ -139,7 +132,6 @@ public class Event_Service {
 
 			} else {
 				// System.out.println(i + 1 + " 차 시도 ");
-
 				if (i >=productPers.length-1) {  // 7이상이면 꽝처리 0~6 상품  7 꽝 
 
 					// System.out.println(productPers.length);
@@ -148,12 +140,9 @@ public class Event_Service {
 
 					result.put("result", changedTime(7));
 					result.put("result_no", 7);
-
 				}
-
 				continue;
 			}
-
 		}
 
 		return result;
@@ -166,7 +155,7 @@ public class Event_Service {
 			throws Exception {
 
 		int product_Total = 0;
-		System.out.println("응모자 수 :: " + student_enter);
+	//	System.out.println("응모자 수 :: " + student_enter);
 		if (event_dao.sel_product_list(client_code).get(0).getLeft_product_total() != 0) {
 			product_Total = event_dao.sel_product_list(client_code).get(0)
 					.getLeft_product_total();
@@ -179,9 +168,8 @@ public class Event_Service {
 			student_per = ((double) 1 / (student_total - student_enter)) * 100;
 		}
 
-		System.out.println("student_per :: " + student_per + " 남은 학생의 확률");
-		System.out.println(" (student_total - student_enter)  :: "
-				+ (student_total - student_enter) + " 남은 학생 수");
+		//System.out.println("student_per :: " + student_per + " 남은 학생의 확률");
+	//	System.out.println(" (student_total - student_enter)  :: "	+ (student_total - student_enter) + " 남은 학생 수");
 
 		for (int y = 0; y < product_Arr.length; y++) {
 			double product_per;
@@ -190,18 +178,15 @@ public class Event_Service {
 
 				product_per = ((double) product_Arr[y] / 1) * 100; // 0개 일때 확률
 																	// 연산
-				System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "
-						+ product_Arr[y] + " 개수");
-				// System.out.println("if  :: "+ product_Total);
-
 				result[y] = (Double.parseDouble(String.format("%.2f",
 						(double) product_per * student_per)));
 
-				System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
+			//	System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "+ product_Arr[y] + " 개수");
+				// System.out.println("if  :: "+ product_Total);
+			//	System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
 
 			} else { // 한개 이상의 상품의 확률
-				System.out.println("product_Arr[" + y + "] 남은 상품  :: "
-						+ product_Arr[y]);
+			//	System.out.println("product_Arr[" + y + "] 남은 상품  :: "		+ product_Arr[y]);
 				// System.out.println("else :: " + product_Total);
 
 				product_per = ((double) product_Arr[y] / product_Total) * 100;
@@ -210,18 +195,18 @@ public class Event_Service {
 						(double) product_per * student_per))) /20; ////
 																// +addTimePer;//
 																// // 당첨률 낮추기
-
-				System.out.println("상품 확률 :: " + product_per);
-				System.out.println("재학생 (미응모자)확률 :: " + student_per);
-
-				System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
+		
+			//	System.out.println("상품 확률 :: " + product_per);
+			//	System.out.println("재학생 (미응모자)확률 :: " + student_per);
+			//	System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
 
 			}
 		}
-
+		
 		return result;
+		
+		
 	}
-
 	@Transactional
 	Map<String, Object> tran_chek(Map<String, Object> winPro, EventVO eventVO)
 			throws Exception {
@@ -232,6 +217,15 @@ public class Event_Service {
 				|| eventVO.getStudent_stt_code().equals("34")) {	//재학생 기준 ~
 			try {
 				
+				System.out.println("DB 결과");
+			/*	System.out.println("=============================");
+					System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_code());
+					System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_mem_code());
+					System.out.println("eventVO.getClient_code() ::  "+eventVO.getEvent_message());
+					System.out.println("eventVO.getClient_code() ::  "+eventVO.getWin_yn());
+					System.out.println("eventVO.getClient_code() ::  "+eventVO.getProduct_no());
+				System.out.println("=============================");
+				*/
 				System.out.println("정상 상품 번호 :: "+ eventVO.getProduct_no());
 				
 				event_dao.ups_product_sub(eventVO); // 상품 을 차감 할때 예외 발생하면 꽝으로 처리
@@ -242,19 +236,43 @@ public class Event_Service {
 				// 당첨 정보도 꽝으로 처리한다.
 
 				System.out.println("예외 발생");
+			/*	System.out.println("=============================");
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_code());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_mem_code());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getEvent_message());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getWin_yn());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getProduct_no());
+				System.out.println("=============================");
+			*/
 				eventVO.setWin_yn("N");
 				eventVO.setProduct_no(8); 
 				winPro.put("result", changedTime(7));
 				winPro.put("result_no", 7);
 			} finally { // 예외 발생하나 안하나 응모자 입력값, 응모자 수를 차감한다
-
-				event_dao.ups_targerCnt_sub(eventVO); // 응모자 차감 재학생일때 무조건 응모자 차감 
+			
 				System.out.println("finally 완료");
+				/*System.out.println("=============================");
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_code());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_mem_code());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getEvent_message());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getWin_yn());
+				System.out.println("eventVO.getClient_code() ::  "+eventVO.getProduct_no());
+				System.out.println("=============================");
+			*/
+				event_dao.ups_targerCnt_sub(eventVO); // 응모자 차감 재학생일때 무조건 응모자 차감 
 			}
 
 		}
 
 		System.out.println("추가");
+/*		System.out.println("=============================");
+		System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_code());
+		System.out.println("eventVO.getClient_code() ::  "+eventVO.getClient_mem_code());
+		System.out.println("eventVO.getClient_code() ::  "+eventVO.getEvent_message());
+		System.out.println("eventVO.getClient_code() ::  "+eventVO.getWin_yn());
+		System.out.println("eventVO.getClient_code() ::  "+eventVO.getProduct_no());
+		System.out.println("=============================");
+	*/
 		event_dao.ins_eventMsg(eventVO); // 응모자 정보 입력 // 재학생이건 아니건 무조건 정보 입력 
 
 		return winPro;
@@ -290,7 +308,13 @@ public class Event_Service {
 
 				product_Arr = intConvert_Arr(op_pdlist);
 				product_Name = strConvert_Name(op_pdlist);
-
+				/*
+				System.out.println("===============================");
+				for (int i = 0; i < product_Name.length; i++) {
+					System.out.println(i + "번째의 문자 리스트 :: "+ product_Name[i] );
+				}
+				System.out.println("===============================");
+				*/
 				int student_total = progressDataVO.getIn_college();
 				int student_enter = progressDataVO.getEnter_cnt();
 				double addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO	.getEs_time()) * 100 * 0.1;
@@ -302,7 +326,6 @@ public class Event_Service {
 				// insert 할 정보 셋
 
 				// 재학생 기준
-				
 				if ((int) winPro.get("result_no") < 7) { // 당첨
 					
 					eventVO.setWin_yn("Y");
@@ -332,7 +355,7 @@ public class Event_Service {
 			winPro.put("result_no", 7);
 			winPro.put("result_txt", "다음 기회에");
 			
-		   winPro = tran_chek(winPro, eventVO);
+			winPro = tran_chek(winPro, eventVO);
 			
 		}
 		return winPro;

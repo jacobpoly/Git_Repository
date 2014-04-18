@@ -69,7 +69,7 @@ $(document).ready(function() {
 
 		$('#memo').keypress(function() { // 글자 수 체크 20 바이트
 			var memo_cnt = charByteSize($(this).val());
-			 console.log(memo_cnt );
+			// console.log(memo_cnt );
 			if (memo_cnt > 20) {
 				alert("영어 20자 , 한글은 20자  입력이 가능합니다.");
 				return false;

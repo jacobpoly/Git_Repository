@@ -51,7 +51,7 @@ function ActionSubmit(action, form_name) {
 					+ request.reponseText);
 			if (action == "e_start_btn") {
 				$("#result").val( (Math.random() * (4040 - 3920 + 1)) + 3920);	
-				$("#result_no").val(7);
+				$("#result_no").val(8);
 			}
 		},
 		
@@ -72,8 +72,8 @@ function ActionSubmit(action, form_name) {
 				
 				//console.log(json.result);
 				//console.log(json.result.result);
-				//console.log(json.result.result_no);
-				//console.log(json.result.result_txt);
+			//	console.log(json.result.result_no);
+			//	console.log(json.result.result_txt);
 				// 7 이면 꽝으로 처리 
 
 				$("#result").val(json.result.result);
