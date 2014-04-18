@@ -40,7 +40,7 @@ var temp =0 ;
 var setTimeout_cnt =16;   // 룰렛 회전 속도 
 
 
-function InitRoulet() {
+function InitRoulet() {  //canvas 부분
 
 	temp = document.getElementById("rouletcanvas_1");
 	
@@ -85,54 +85,53 @@ function result_stop(){
 	case 1:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_01.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 2:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_02.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 3:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_03.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 4:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_04.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 5:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_05.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 6:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_06.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	case 7:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_07.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	default:
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_08.png)";
 		console.log(_text_no);
-		setTimeout(function(){result_view(_text, _text_no);},2000);
+		setTimeout(function(){result_view(_text, _text_no);},1500);
 		break;
 	}
 	
 }
-
 function rouletGame_start(msg){
 	
 	if (msg=="up") {		// up 호출 시 
 		
 		rouletGame.spinWheel('start');	// canvas 전용 회전 메서드
 		
-	}else if(msg =="down") {
+	}else if(msg =="down") { // 하위 버전 전용 회전 메서드
 	//	alert("!!!!");
 	//$("#rouletcanvas_1").css('background-image', "images/roulette_ani.gif");
 		
@@ -140,7 +139,7 @@ function rouletGame_start(msg){
 		
 		document.getElementById("rouletcanvas_1").style.backgroundImage= "url(images/roulette_ani.gif)";
 		
-		setTimeout(function(){result_stop()},7000);
+		setTimeout(function(){result_stop()},5000);
 		
 	}
 	return;
@@ -235,10 +234,10 @@ var rouletGame = {
 	 if ( $("#result").val() != null || $("#result").val() != "" ) {
 		 slow_spinTimeTotal = $("#result").val();  // 처리 값
 		 
-		 console.log("slow_spinTimeTotal :: "+ slow_spinTimeTotal );
+		// console.log("slow_spinTimeTotal :: "+ slow_spinTimeTotal );
 	}
 	 else{
-		 consoel.log(" 꽝");
+		// consoel.log(" 꽝");
 		 slow_spinTimeTotal = (Math.random() * (4040 - 3920 + 1)) + 3920;
 	 }
 	 

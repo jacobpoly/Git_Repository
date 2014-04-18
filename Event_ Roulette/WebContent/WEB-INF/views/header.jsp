@@ -7,7 +7,7 @@
 		<div id="step1">
 			<!-- 입력형역 -->
 			<div class="step1_input">
-				<input type="text" id="memo" name="memo" maxlength="30"/>
+				<input type="text" id="memo" name="memo" maxlength="30" />
 			</div>
 			<!-- BT -->
 			<p  class="btn_join">참여하기</p>

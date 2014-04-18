@@ -5,7 +5,7 @@
 <head>
 	<title> 룰렛 이벤트 </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta id="X-UA-Compatible" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script type="text/javascript" src="Require/Js/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="Require/Js/jquery.rotate.js"></script>
@@ -24,32 +24,38 @@
 if(name == "Microsoft Internet Explorer"){
 
 	if(ver.indexOf("MSIE 8.0") != -1 || ver.indexOf("MSIE 7.0") != -1)  {		// 하위 브라우저
-		$(window).load(function(){
+		//$(window).load(function(){
+		$(document).ready(function() {	
 			$("#wrap").remove();
 			$("#ie_ver").val("down");
-			//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=7;IE7;chrome=1");
-			//alert("하위");
+			document.getElementById("X-UA-Compatible").setAttribute("content", "IE=7;IE7;chrome=1");
+			//console.log("하위");
 		});
 
  
 	}else{		// 지원 가능 브라우저 
 
-		$(window).load(function(){
+		//$(window).load(function(){
+		$(document).ready(function() {
 			$("#wrap_down").remove();
 			$("#ie_ver").val("up");
-			//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=edge;chrome=1");
+			document.getElementById("X-UA-Compatible").setAttribute("content", "IE=edge;chrome=1");
 			//alert("상위");
 		});
 
- 
 	}
 }
 else{
 
-	$(window).load(function(){
+	//$(window).load(function(){
+	$(document).ready(function() {
+
+		alert("Internet Explorer 에서만 지원이 가능합니다.");
+		window.close();
+	
 		$("#wrap_down").remove();
 		$("#wrap").remove();
-	//$("#ie_ver").val("up");
+		//$("#ie_ver").val("up");
 		//document.getElementById("X-UA-Compatible").setAttribute("content", "IE=edge;chrome=1");
 		//alert("IE 외 브라우저");
 	});
@@ -66,11 +72,9 @@ else{
 	<input type="hidden" id="result_txt" class="result_txt" name="result_txt">
 	<input type="hidden" id="ie_ver" class="ie_ver" name="ie_ver">
 <div id="wrap">
-
-		<jsp:include page="header.jsp"/>
-		<jsp:include page="ie_edge.jsp"/>
-		<jsp:include page="footer.jsp"/>
-	
+	<jsp:include page="header.jsp"/>
+	<jsp:include page="ie_edge.jsp"/>
+	<jsp:include page="footer.jsp"/>
 </div>
 <div id="wrap_down">
 	<jsp:include page="header.jsp"/>

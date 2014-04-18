@@ -44,7 +44,7 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 		ModelAndView start_mav = new ModelAndView("e_roulette");
-		String client_mem_code = "152565";
+		String client_mem_code = request.getParameter("_client_mem_code");
 
 		if (client_mem_code != null) {
 
@@ -142,7 +142,7 @@ public class Event_Controller {
 
 		}
 
-		System.out.println("접속 아이피 :: " + ip);
+		//System.out.println("접속 아이피 :: " + ip);
 
 		session.setAttribute("ip", ip);
 

@@ -22,7 +22,7 @@ function ActionSubmit(action, form_name) {
 	//console.log("action ::" + action);
 //	console.log("form_name ::" + form_name);
 
-	console.log($("#" + form_name));
+	//console.log($("#" + form_name));
 
 	$.ajax({
 		type : "POST" // "POST", "GET"
@@ -71,9 +71,9 @@ function ActionSubmit(action, form_name) {
 			//	console.log("2 "+json);
 				
 				//console.log(json.result);
-				console.log(json.result.result);
-				console.log(json.result.result_no);
-				console.log(json.result.result_txt);
+				//console.log(json.result.result);
+				//console.log(json.result.result_no);
+				//console.log(json.result.result_txt);
 				// 7 이면 꽝으로 처리 
 
 				$("#result").val(json.result.result);

@@ -42,19 +42,24 @@ charByteSize = function (msg) {
 
 emptyRoulette = function() {
 
+	 //alert("진입 2");
 	// disEnter();
+	//$("#memo").attr("disabled", true);
+	 document.getElementById('memo').disabled="true"; 
+	//$("#memo").css("background-color", "#cccccc"); 
+	 document.getElementById('memo').style.backgroundColor = "#cccccc";
 	$(".btn_join").css("background-position-y", "0px");
 	$(".btn_join").unbind("click");
 	$("#rouletcanvas_1").hide();
 	$("#bt_start").hide();
 	$("#point_arrow").show();
-	$("#memo").attr("disabled", true);
-	$("#memo").css("background-color", "#cccccc");
 },
 
 $(document).ready(function() {
 
 	var event_yn = $("#event_yn").val();
+	
+	//console.log("!! :: "+event_yn);
 
 	if (event_yn == 'N') {
 		$("#rouletcanvas_1").show();
@@ -84,9 +89,9 @@ $(document).ready(function() {
 				// memoClick(memo_len);
 				return false;
 			} else {
-				$("#memo").attr("readonly", true); // 데이터 전송 할때는 readonly로
-				// 사용
+				$("#memo").attr("readonly", true); // 데이터 전송 할때는 readonly로  사용
 				$("#memo").css("background-color", "#cccccc");
+				$(".btn_join").css("background-position-y", "0px");
 				$(".btn_join").unbind("click");
 
 				ActionSubmit('e_participation', 'event_form');
@@ -119,7 +124,7 @@ $(document).ready(function() {
 		});
 
 	} else if (event_yn == 'Y') {
-
+		
 		emptyRoulette();
 		$(".rouletcanvas_4").show();
 	} else {
