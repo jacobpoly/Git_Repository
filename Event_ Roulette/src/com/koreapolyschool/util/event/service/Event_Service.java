@@ -167,8 +167,7 @@ public class Event_Service {
 
 		int product_Total = 0;
 		System.out.println("응모자 수 :: " + student_enter);
-		if (event_dao.sel_product_list(client_code).get(0)
-				.getLeft_product_total() != 0) {
+		if (event_dao.sel_product_list(client_code).get(0).getLeft_product_total() != 0) {
 			product_Total = event_dao.sel_product_list(client_code).get(0)
 					.getLeft_product_total();
 		} else {
@@ -317,7 +316,7 @@ public class Event_Service {
 					winPro.put("result_txt", "다음 기회에");
 				}
 
-			//	winPro = tran_chek(winPro, eventVO); // 한번 더 체크
+				winPro = tran_chek(winPro, eventVO); // 한번 더 체크
 
 			} // 끝
 		}
@@ -333,7 +332,7 @@ public class Event_Service {
 			winPro.put("result_no", 7);
 			winPro.put("result_txt", "다음 기회에");
 			
-		//   winPro = tran_chek(winPro, eventVO);
+		   winPro = tran_chek(winPro, eventVO);
 			
 		}
 		return winPro;
