@@ -171,6 +171,7 @@ ORDER	BY A.CLIENT_NAME, A.MEMBER_CODE
 								)	
 		VALUES	(1, 1, #{client_mem_code}, #{product_no}, #{win_yn}, #{event_message}, #{student_stt_code}, GETDATE(), #{first_reg_mem_code}, #{first_reg_ip})
 	</insert>
+	
 	<!-- 상품 수 차감  -->
 	<update id="ups_product_sub" parameterType="eventVO">
 	UPDATE	DBO.TB_MKB_EVENT_PRODUCT_CONFIG_CLIENT	
@@ -182,7 +183,7 @@ ORDER	BY A.CLIENT_NAME, A.MEMBER_CODE
 		WHERE	EVENT_NO = 1									
 		AND		PRODUCT_NO = #{product_no}										-- INT
 		AND		CLIENT_CODE =#{client_code}						-- NVARCHAR(10)
-		AND		LEFT_PRODUCT_CNT > 0
+	
 		AND		EVENT_SCHEDULE_SEQ = 1
 	</update>
 	
@@ -196,7 +197,6 @@ ORDER	BY A.CLIENT_NAME, A.MEMBER_CODE
 		, LAST_UPD_IP = #{first_reg_ip}
 	WHERE	EVENT_NO = 1
 	AND		CLIENT_CODE = #{client_code}			-- NVARCHAR(10)
-	AND		LEFT_TARGET_CNT > 0
 	
 	</update>
 

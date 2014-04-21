@@ -90,18 +90,17 @@ public class Event_Dao {
 	// 이벤트 응모 데이터 입력
 	@Transactional
 	public void ins_eventMsg(EventVO eventVO) throws Exception{
+		
 		session.insert("event_ns.ins_eventMsg", eventVO);
 	}
 	
 	// 상품 차감 캠퍼스 별
-	@Transactional
 	public void ups_product_sub(EventVO eventVO) throws Exception{
 		session.update("event_ns.ups_product_sub", eventVO);
 		
 	}
 	
 	// 대상자 차감
-	@Transactional
 	public void ups_targerCnt_sub(EventVO eventVO) throws Exception{
 		session.update("event_ns.ups_targerCnt_sub", eventVO);
 	}

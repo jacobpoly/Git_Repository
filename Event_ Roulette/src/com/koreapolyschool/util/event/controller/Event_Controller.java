@@ -181,9 +181,8 @@ public class Event_Controller {
 		System.out.println("student_stt_code ::" + student_stt_code);
 
 		System.out.println("진입");
-		result_map = event_Service.op_Result((String) request.getSession()
-				.getAttribute("client_code"), (String) request.getSession()
-				.getAttribute("memo"),
+		result_map = event_Service.op_Result((String) request.getSession().getAttribute("client_code"), 
+				(String) request.getSession().getAttribute("memo"),
 				(int) request.getSession().getAttribute("client_mem_code"),
 				student_stt_code,
 				(String) request.getSession().getAttribute("ip")); // 캠퍼스의 확률을
