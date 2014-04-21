@@ -81,6 +81,40 @@ document.getElementById("layer_ifr_form").style.display = "block";
 v_frm.submit();
 
 }
+
+
+function xor_str(s, k) {
+
+	var to_enc = s;	// 암호화 키
+	var xor_key = k;	// 복호화 키
+	var the_res = '';
+
+
+	for (i = 0; i < to_enc.length; ++i) {
+
+		if ((xor_key.charAt(i % xor_key.length).charCodeAt(0) ^ to_enc.charAt(i).charCodeAt(0)) == (1 ^ 1)) {
+			the_res += '\0';
+
+		} else if (to_enc.charAt(i).charCodeAt(0) == '\0') {
+		
+			the_res += xor_key.charAt(i % xor_key.length);
+		} else {
+			the_res += String.fromCharCode(xor_key.charAt(	i % xor_key.length).charCodeAt(0)^ to_enc.charAt(i).charCodeAt(0)); // 숫자
+		}
+	}
+	return the_res;
+} // xor_str
+
+var data = "시작{ 한글 123 abc ®♬☎ }끝";
+var key1 = "폴리이벤트";
+var key2 ="POLYEVENT"; 
+
+ var t = xor_str(xor_str(data, key1), key2);
+ var v = xor_str(xor_str(t, key2), key1);
+
+
+
+
 </script>
 
 <body>
