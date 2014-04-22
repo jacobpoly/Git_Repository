@@ -27,6 +27,7 @@ import com.koreapolyschool.util.event.vo.EventVO;
 import com.koreapolyschool.util.event.vo.ExcelVO;
 import com.koreapolyschool.util.event.vo.ProgressDataVO;
 import com.koreapolyschool.util.event.vo.StudentVO;
+
 import java.net.*;
 @Controller
 public class Event_Controller {
@@ -47,10 +48,10 @@ public class Event_Controller {
 		// var t = xor_str(xor_str(data, key1), key2); // 암호화
 		// var v = xor_str(xor_str(t, key2), key1); // 복호화
 	
-		String xor_client_mem_code = URLDecoder.decode(request.getParameter("_client_mem_code"), "utf-8");
-				// "폐릑읍벘";
+		String xor_client_mem_code = request.getParameter("_client_mem_code");	
+		// "폐릑읍벘";
 				// request.getParameter("_client_mem_code");
-		System.out.println("암호화 :: "+xor_client_mem_code);
+		System.out.println("Parameter :: "+xor_client_mem_code);
 		ModelAndView start_mav = new ModelAndView("e_roulette");
 
 		//	String data = "ᅸ繲읃볝ޡ綢막윋볂틛펛릁읏벂틎팟龎볔튊揥"; // 암호화 테스트
@@ -64,7 +65,8 @@ public class Event_Controller {
 
 			String key1 = "폴리이벤트";
 			String key2 = "POLYEVENT";
-			
+			xor_client_mem_code = URLDecoder.decode(xor_client_mem_code, "utf-8");
+			System.out.println("암호화 :: "+xor_client_mem_code);
 			String client_mem_code = XOR_java.xor_str(XOR_java.xor_str(xor_client_mem_code, key2), key1);
 
 			// "128906"; // 91797 코드 학번 //152546 152547 152548

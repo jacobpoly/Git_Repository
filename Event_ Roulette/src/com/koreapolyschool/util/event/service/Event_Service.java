@@ -158,8 +158,7 @@ public class Event_Service {
 		// System.out.println("응모자 수 :: " + student_enter);
 		if (event_dao.sel_product_list(client_code).get(0)
 				.getLeft_product_total() != 0) {
-			product_Total = event_dao.sel_product_list(client_code).get(0)
-					.getLeft_product_total();
+			product_Total = event_dao.sel_product_list(client_code).get(0).getLeft_product_total();
 		} else {
 			product_Total = 1;
 		}
@@ -181,28 +180,30 @@ public class Event_Service {
 
 			if (product_Arr[y] == 0) {
 
-				product_per = ((double) product_Arr[y] / 1) * 100; // 0개 일때 확률
+			//	product_per = ((double) product_Arr[y] / 1) * 100; // 0개 일때 확률
 																	// 연산
+				product_per = ((double) product_Arr[y]); // 0개 일때 확률
 				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per)));
 
 				// System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "+
 				// product_Arr[y] + " 개수");
 				// System.out.println("if  :: "+ product_Total);
-				// System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
+				 System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
 
 			} else { // 한개 이상의 상품의 확률
 				// System.out.println("product_Arr[" + y + "] 남은 상품  :: " +
 				// product_Arr[y]);
 				// System.out.println("else :: " + product_Total);
 
-				product_per = ((double) product_Arr[y] / product_Total) * 100;
+			//	product_per = ((double) product_Arr[y] / product_Total) * 100;
 
-				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per))) / 20; // +addTimePer;//
+				product_per = ((double) product_Arr[y]);
+				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per)));// + 0.16;// addTimePer; // 가중치
 				// // 당첨률 낮추기
 
 				// System.out.println("상품 확률 :: " + product_per);
 				// System.out.println("재학생 (미응모자)확률 :: " + student_per);
-				// System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
+				 System.out.println("	최종 확률 :: [" + y + "] :: " + result[y]);
 
 			}
 		}
@@ -271,6 +272,8 @@ public class Event_Service {
 				eventVO.setProduct_no(8);
 				winPro.put("result", changedTime(7));
 				winPro.put("result_no", 7);
+				winPro.put("result_txt", "다음 기회에");
+				
 			} finally { // 예외 발생하든 안하든, 재학의 이력을 등록
 
 				event_dao.ins_eventMsg(eventVO);
@@ -338,11 +341,9 @@ public class Event_Service {
 				 */
 				int student_total = progressDataVO.getIn_college();
 				int student_enter = progressDataVO.getEnter_cnt();
-				double addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO
-						.getEs_time()) * 100 * 0.1;
+				double addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO.getEs_time()) * 100 * 0.1;
 
-				resultPer = productPer(product_Arr, student_total,
-						student_enter, addTimePer, client_code); // +addTimePer;
+				resultPer = productPer(product_Arr, student_total, student_enter, addTimePer, client_code);
 																	// 상품들의 확률
 																	// 연산
 
@@ -355,8 +356,7 @@ public class Event_Service {
 
 					eventVO.setWin_yn("Y");
 					eventVO.setProduct_no((int) winPro.get("result_no") + 1);
-					winPro.put("result_txt",
-							product_Name[(int) winPro.get("result_no")]);
+					winPro.put("result_txt", product_Name[(int) winPro.get("result_no")]);
 
 				} else { // 꽝~~
 
