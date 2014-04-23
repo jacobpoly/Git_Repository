@@ -27,6 +27,7 @@ public class Event_Service {
 	private List<ExcelVO> stList;
 	private List<ProgressDataVO> pgList;
 
+	// 상품 데이터 리스트 배열로 지정
 	public int[] intConvert_Arr(List<ProductVO> op_pdlist) {
 
 		//System.out.println(op_pdlist.size());
@@ -39,7 +40,7 @@ public class Event_Service {
 
 		return product_Arr;
 	}
-
+ // 상품 명 배열
 	public String[] strConvert_Name(List<ProductVO> op_pdlist) {
 
 		String[] product_Name = new String[op_pdlist.size()];
@@ -149,7 +150,7 @@ public class Event_Service {
 
 	}
 
-	// 확률 계산 (상품 리스트, 재학생 총, 응모자 수, 가중치)
+	// 확률 계산 (상품 리스트, 재학생 총, 응모자 수, 가중치)   // 가중치 미적용 서버 오픈때 적용예정
 	double[] productPer(int[] product_Arr, int student_total,
 			int student_enter, double addTimePer, String client_code)
 			throws Exception {
@@ -343,7 +344,14 @@ public class Event_Service {
 				 */
 				int student_total = progressDataVO.getIn_college();
 				int student_enter = progressDataVO.getEnter_cnt();
-				double addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO.getEs_time()) * 100 * 0.1;
+				
+				// 4월 23일 가중치 수정 
+				// 이벤트 기간 보다 진행 시간이 낮을 때만 연산 결과를 보내고, 그렇지 않으면 0으로 반환
+				
+				double addTimePer = 0;
+				if (progressDataVO.getEs_time()  >= progressDataVO.getCs_time() ) {
+					addTimePer = ((double) progressDataVO.getCs_time() / progressDataVO.getEs_time()) * 100 * 0.1;
+				}
 
 				resultPer = productPer(product_Arr, student_total, student_enter, addTimePer, client_code);
 																	// 상품들의 확률
