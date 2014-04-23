@@ -103,8 +103,7 @@ public class Event_Controller {
 						System.out.println("학생 : 응모자 ");
 
 						// 응모자
-						start_mav
-								.addObject("event_yn", studentVO.getEnter_yn());
+						start_mav.addObject("event_yn", studentVO.getEnter_yn());
 						// start_mav.addObject("event_yn", "N");
 					} else {
 						System.out.println("학생 : 해석 할수 없는 코드");

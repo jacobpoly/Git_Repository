@@ -149,26 +149,28 @@ public class Event_Service {
 
 	}
 
-	// 확률 계산 계산 (상품 리스트, 재학생 총, 응모자 수, 가중치)
+	// 확률 계산 (상품 리스트, 재학생 총, 응모자 수, 가중치)
 	double[] productPer(int[] product_Arr, int student_total,
 			int student_enter, double addTimePer, String client_code)
 			throws Exception {
 
 		int product_Total = 0;
 		// System.out.println("응모자 수 :: " + student_enter);
-		if (event_dao.sel_product_list(client_code).get(0)
-				.getLeft_product_total() != 0) {
+		if (event_dao.sel_product_list(client_code).get(0).getLeft_product_total() != 0) {
 			product_Total = event_dao.sel_product_list(client_code).get(0).getLeft_product_total();
 		} else {
 			product_Total = 1;
 		}
 		double[] result = new double[product_Arr.length];
-		double student_per = 1 * 100; // 응모자수, 재학생 캠퍼스 수가 같을때
+		double student_per = 1; // 응모자수, 재학생 캠퍼스 수가 같을때
 		if (student_total > student_enter) { // 응모자가 총 재학생 수 보다 적을때만 총 학생의 확률
 												// 계산하고
-			student_per = ((double) 1 / (student_total - student_enter)) * 100;
+	//		student_per = ((double) 1 / (student_total - student_enter)) * 100;
+			student_per = ((double) 1 / (student_total - student_enter));
 		} else { // 총 학생수 보다 응모자가 같거나 많다면, 미응모자가 없다는 것으로 판단하여, 100으로 한다.
-			student_per = 1 * 100;
+	//		student_per = 1 * 100;
+			student_per = 1;
+			
 		}
 
 		// System.out.println("student_per :: " + student_per + " 남은 학생의 확률");
@@ -183,7 +185,7 @@ public class Event_Service {
 			//	product_per = ((double) product_Arr[y] / 1) * 100; // 0개 일때 확률
 																	// 연산
 				product_per = ((double) product_Arr[y]); // 0개 일때 확률
-				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per)));
+				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per*100)));
 
 				// System.out.println("product_Arr[" + y + "] 소진하거나 없는 상품 :: "+
 				// product_Arr[y] + " 개수");
@@ -198,7 +200,7 @@ public class Event_Service {
 			//	product_per = ((double) product_Arr[y] / product_Total) * 100;
 
 				product_per = ((double) product_Arr[y]);
-				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per)));// + 0.16;// addTimePer; // 가중치
+				result[y] = (Double.parseDouble(String.format("%.2f", (double) product_per * student_per*100)));// + 0.16;// addTimePer; // 가중치
 				// // 당첨률 낮추기
 
 				// System.out.println("상품 확률 :: " + product_per);

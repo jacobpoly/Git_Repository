@@ -2,7 +2,7 @@
 			<!-- 기본 룰렛 -->
 			
 			<div class="rouletcanvas_1" id="rouletcanvas_1"></div>
-			<embed id="sos" src="sound/ROULETTE.mp3" autostart="false" loop="false" hidden="true">
+			<!-- <embed id="sos" src="sound/ROULETTE.mp3" autostart="false" loop="false" hidden="true">  -->
 		
 				<!-- 당첨 -->
 			<div class="rouletcanvas_2" id="rouletcanvas_2">

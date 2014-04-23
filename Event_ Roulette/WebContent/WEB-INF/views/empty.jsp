@@ -11,7 +11,7 @@
 <script type="text/javascript">
 $(document).ready(function() {	 
 
-	alert("로그인 하여 이용해주세요");
+	alert("잘못된 경로로 접근하였습니다.");
 	window.close();
 	
 });
