@@ -44,7 +44,7 @@ public class Event_Controller {
 		// log.info("================ Method Name : gamestart");
 
 	
-		String xor_client_mem_code= request.getParameter("_client_mem_code");	
+		String xor_client_mem_code = request.getParameter("_client_mem_code");	
 		System.out.println("Parameter :: "+xor_client_mem_code);
 		ModelAndView start_mav = new ModelAndView("e_roulette");
 
@@ -127,12 +127,11 @@ public class Event_Controller {
 	
 		System.out.println("e_participation.do  시작   ====================="+getNow());
 		ModelAndView mv = new ModelAndView("jsonView1");
-		System.out.println("memo ::"+ request.getParameter("memo"));
+		System.out.println("TEST memo ::"+ request.getParameter("memo"));
 
 	//	System.out.println("접속 아이피 :: " + ip);
 
 	//	mv.addObject("ip", ip);
-		mv.addObject("memo",  request.getParameter("memo"));
 		mv.addObject("e_start_btn", "e_start_btn");
 		mv.addObject("on", "on");
 
@@ -143,15 +142,17 @@ public class Event_Controller {
 	@RequestMapping("/e_start_btn.do")
 	public ModelAndView result(HttpServletRequest request) throws Exception {
 
+		String 	memo = request.getParameter("memo");
+		String 	client_code = request.getParameter("client_code");
+		String 	student_stt_code = request.getParameter("student_stt_code");
+		int 	client_mem_code = Integer.parseInt(request.getParameter("client_mem_code"));
+		
 		System.out.println("e_start_btn.do  시작   ====================="+getNow());
-		System.out.println("memo  ::" + request.getParameter("memo"));
-		System.out.println("client_code  ::" + request.getParameter("client_code"));
-		System.out.println("student_stt_code ::" + request.getParameter("student_stt_code"));
-		System.out.println("client_mem_code ::" + request.getParameter("client_mem_code"));
-		
-		ModelAndView result_mav = new ModelAndView("jsonView1");
-		Map<String, Object> result_map = new HashMap<>();
-		
+		System.out.println("memo  ::" + memo);
+		System.out.println("client_code  ::" +client_code);
+		System.out.println("student_stt_code ::" + student_stt_code);
+		System.out.println("client_mem_code ::" + client_mem_code);
+	
 		String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 	//	System.out.println("HTTP_X_FORWARDED_FOR :: " + ip);
 
@@ -167,12 +168,16 @@ public class Event_Controller {
 		}
 		
 			System.out.println("ip ::" +ip);
-		
+			
+			ModelAndView result_mav = new ModelAndView("jsonView1");
+			Map<String, Object> result_map = new HashMap<>();
+				
+			
 		result_map = event_Service.op_Result(
-				request.getParameter("client_code"),
-				request.getParameter("memo"),
-				Integer.parseInt(request.getParameter("client_mem_code")),
-				request.getParameter("student_stt_code"),
+				client_code,
+				memo,
+				client_mem_code,
+				student_stt_code,
 				ip);
 															
 		int result_no = (int) result_map.get("result_no") + 1;
