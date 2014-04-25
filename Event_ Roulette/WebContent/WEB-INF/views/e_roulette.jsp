@@ -63,14 +63,20 @@ else{
 }
 </script>
 </head>
-<body>
+<body  onBlur="window.focus()">
 	<form id="event_form" class="event_form" onsubmit="return false;">
-	<input type="hidden" id="event_yn" class="event_yn" name="event_yn" value="${event_yn }">
-	<input type="hidden" id="event_bnt" class="event_btn" name="event_btn">
-	<input type="hidden" id="result" class="result" name="result">
-	<input type="hidden" id="result_no" class="result_no" name="result_no">
-	<input type="hidden" id="result_txt" class="result_txt" name="result_txt">
-	<input type="hidden" id="ie_ver" class="ie_ver" name="ie_ver">
+		<input type="hidden" id="event_yn" class="event_yn" name="event_yn" value="${event_yn }">
+		<input type="hidden" id="event_btn" class="event_btn" name="event_btn">
+		<input type="hidden" id="result" class="result" name="result">
+		<input type="hidden" id="result_no" class="result_no" name="result_no">
+		<input type="hidden" id="result_txt" class="result_txt" name="result_txt">
+		<input type="hidden" id="ie_ver" class="ie_ver" name="ie_ver">
+	
+		<input type="hidden" id="client_code" class="client_code" name="client_code" value="${client_code}">
+		<input type="hidden" id="client_mem_code" class="client_mem_code" name="client_mem_code" value="${client_mem_code}">
+		<input type="hidden" id="student_stt_code" class="student_stt_code" name="student_stt_code" value="${student_stt_code}">
+		<input type="hidden" id="in_college_yn" class="in_college_yn" name="in_college_yn" value="${in_college_yn}">
+	
 <div id="wrap">
 	<jsp:include page="header.jsp"/>
 	<jsp:include page="ie_edge.jsp"/>

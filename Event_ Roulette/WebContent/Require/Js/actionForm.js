@@ -47,8 +47,10 @@ function ActionSubmit(action, form_name) {
 		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 		error : function(request, status, error) {
 			// 통신 에러 발생시 처리
-			alert("code : " + request.status + "\r\nmessage : "
-					+ request.reponseText);
+			//alert("code : " + request.status + "\r\nmessage : "
+			//		+ request.reponseText);
+			
+			alert("서버 접속이 원할 하지 않습니다. 다시 시도해주시길 바랍니다.");
 			if (action == "e_start_btn") {
 				$("#result").val( (Math.random() * (4040 - 3920 + 1)) + 3920);	
 				$("#result_no").val(8);
@@ -89,7 +91,7 @@ function ActionSubmit(action, form_name) {
 
 			//	console.log(json.on);
 			//	console.log(json.e_start_btn);
-				$("#event_bnt").val(json.e_start_btn);
+				$("#event_btn").val(json.e_start_btn);
 				$("#bt_start").attr('class', json.on);
 			}
 //			else if (action == "excel") { // 엑셀 다운로드

@@ -100,7 +100,7 @@ $(document).ready(function() {
 
 					var ie_ver = $("#ie_ver").val();
 
-					ActionSubmit($("#event_bnt").val(), 'event_form'); // 확률 연산
+					ActionSubmit($("#event_btn").val(), 'event_form'); // 확률 연산
 					$("#bt_start").attr('class', '');
 					$("#bt_start").unbind("click");
 					InitRoulet();
@@ -108,10 +108,10 @@ $(document).ready(function() {
 					// alert(ie_ver);
 					if (ie_ver == "up") {
 						rouletGame_start("up");
-						document.embeds[0].play();
+					//	document.embeds[0].play();
 					} else {
 						rouletGame_start("down");
-						document.embeds[0].play();
+					//	document.embeds[0].play();
 					}
 
 				});

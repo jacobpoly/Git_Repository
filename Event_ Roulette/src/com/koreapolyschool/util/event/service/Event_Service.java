@@ -1,6 +1,8 @@
 package com.koreapolyschool.util.event.service;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +108,7 @@ public class Event_Service {
 	Map<String, Object> win_process(double[] productPers, int[] product) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
-
+		System.out.println("win_process 시작 ====================== "+ getNow());
 		for (int i = 0; i < productPers.length; i++) {
 
 			if (Math.random() * 100 < productPers[i]) { // 당첨 되는 부분 // 상품 확률이
@@ -146,6 +148,8 @@ public class Event_Service {
 			}
 		}
 
+		System.out.println("win_process 끝 ====================== "+ getNow());
+		
 		return result;
 
 	}
@@ -154,7 +158,7 @@ public class Event_Service {
 	double[] productPer(int[] product_Arr, int student_total,
 			int student_enter, double addTimePer, String client_code)
 			throws Exception {
-
+System.out.println("productPer 확률 계산 시작 ====================== "+ getNow());
 		int product_Total = 0;
 		// System.out.println("응모자 수 :: " + student_enter);
 		if (event_dao.sel_product_list(client_code).get(0).getLeft_product_total() != 0) {
@@ -211,6 +215,7 @@ public class Event_Service {
 			}
 		}
 
+		System.out.println("productPer 확률 계산 끝 ====================== "+ getNow());
 		return result;
 
 	}
@@ -218,6 +223,8 @@ public class Event_Service {
 
 	Map<String, Object> tran_chek(Map<String, Object> winPro, EventVO eventVO)
 			throws Exception {
+
+		System.out.println("tran_chek 시작 ====================== "+ getNow());
 
 		if (eventVO.getStudent_stt_code().equals("31")
 				|| eventVO.getStudent_stt_code().equals("32")
@@ -301,6 +308,8 @@ public class Event_Service {
 			 * System.out.println("=============================");
 			 */
 		}
+		
+		System.out.println("tran_chek 끝 ====================== "+ getNow());
 		return winPro;
 	}
 
@@ -328,7 +337,7 @@ public class Event_Service {
 
 			if (client_code != null || client_code != "") {
 
-				System.out.println("client_code :: " + client_code);
+				System.out.println("확률 연산 준비 :: op_Result :: client_code :: " + client_code+":: "+getNow());
 
 				progressDataVO = event_dao.sel_progressData(client_code);
 				List<ProductVO> op_pdlist;
@@ -390,14 +399,18 @@ public class Event_Service {
 			winPro.put("result_no", 7);
 			winPro.put("result_txt", "다음 기회에");
 
-			winPro = tran_chek(winPro, eventVO);
+			 winPro = tran_chek(winPro, eventVO);
 
 		}
+		
+		System.out.println("확률 연산 끝 :: op_Result :: client_code :: " + client_code +":: "+getNow());
+		
 		return winPro;
 	}
 
 	public StudentVO mem2client(String client_mem_code) throws Exception {
 		studentVO = (StudentVO) event_dao.sel_mem2client(client_mem_code);
+		System.out.println( "서비스의 mem2client client_mem_code  :: "+ studentVO.getClient_mem_code()+" :: "+getNow() );
 		return studentVO;
 	}
 
@@ -436,19 +449,30 @@ public class Event_Service {
 
 	// 이벤트 응모 데이터 입력
 	public void eventMsg(EventVO eventVO) throws Exception {
-
+		System.out.println("이벤트 응모 데이터 입력 :: "+getNow());
 		event_dao.ins_eventMsg(eventVO);
 
 	}
 
 	// 상품 차감 캠퍼스 별
 	public void product_sub(EventVO eventVO) throws Exception {
+		System.out.println("상품 차감 캠퍼스 별 :: "+getNow());
 		event_dao.ups_product_sub(eventVO);
 	}
 
 	// 대상자 차감
 	public void targerCnt_sub(EventVO eventVO) throws Exception {
+		System.out.println("대상자 차감 :: "+getNow());
 		event_dao.ups_targerCnt_sub(eventVO);
+	}
+	
+
+	public String getNow() {
+		Date now = new Date(System.currentTimeMillis());
+
+		SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+		return simpledateformat.format(now);
 	}
 
 }

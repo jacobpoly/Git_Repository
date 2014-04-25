@@ -43,33 +43,14 @@ public class Event_Controller {
 	public ModelAndView gamestart(HttpServletRequest request) throws Exception {
 		// log.info("================ Method Name : gamestart");
 
-		// var t = xor_str(xor_str(data, key1), key2); // 암호화
-		// var v = xor_str(xor_str(t, key2), key1); // 복호화
 	
-		String xor_client_mem_code = request.getParameter("_client_mem_code");	
-		// "폐릑읍벘";
-				// request.getParameter("_client_mem_code");
+		String xor_client_mem_code= request.getParameter("_client_mem_code");	
 		System.out.println("Parameter :: "+xor_client_mem_code);
 		ModelAndView start_mav = new ModelAndView("e_roulette");
 
-		//	String data = "ᅸ繲읃볝ޡ綢막윋볂틛펛릁읏벂틎팟龎볔튊揥"; // 암호화 테스트
-
-		// XOR_java.xor_str(XOR_java.xor_str(client_mem_code, key2), key1);
-	
-		//	String client_mem_code = "";
-		
-
 		if (xor_client_mem_code != null) {
-
-			String key1 = "폴리이벤트";
-			String key2 = "POLYEVENT";
-			xor_client_mem_code = URLDecoder.decode(xor_client_mem_code, "utf-8");
-			System.out.println("암호화 :: "+xor_client_mem_code);
-			String client_mem_code = XOR_java.xor_str(XOR_java.xor_str(xor_client_mem_code, key2), key1);
-
-			// "128906"; // 91797 코드 학번 //152546 152547 152548
-
-			System.out.println("client_mem_code :: " + client_mem_code);
+			System.out.println("e_gamestart.do  시작   ====================="+getNow());
+			String client_mem_code = xor_client_mem_code;
 
 			if (client_mem_code.equals("4812")) { // 관리자
 
@@ -79,33 +60,40 @@ public class Event_Controller {
 
 			} else { // if (client_mem_code != null || client_mem_code != "")
 
+				System.out.println(client_mem_code+  ":: client_mem_code :: 조회 준비 ::"+ getNow());
 				studentVO = event_Service.mem2client(client_mem_code);
-
-				if (studentVO != null) { // 응모 이력 정보를 못 가지고 오는 클라이언 코드 일 경우
+				
+				if (studentVO != null) { 
+					// 응모 이력 정보를 못 가지고 오는 클라이언 코드 일 경우
 					//eventVO.setClient_code(studentVO.getClient_code());
-					System.out.println("학생~~");
+					System.out.println(studentVO.getClient_mem_code() +"::조회 완료 ::"+ getNow());
 					// 세션 추가
+					/*
 					HttpSession session = request.getSession(true);
 					session.setAttribute("client_code",				studentVO.getClient_code());
 					session.setAttribute("client_mem_code",	studentVO.getClient_mem_code());
 					session.setAttribute("student_stt_code",	studentVO.getStudent_stt_code());
 					session.setAttribute("in_college_yn",			studentVO.getIn_college_yn());
-
+					*/
+					
 					System.out.println("학생 상태 코드 :: " 	+ studentVO.getStudent_stt_code());
 					System.out.println("응모 여부 :: " + studentVO.getEnter_yn());
 					if (studentVO.getEnter_yn().equals("N")) {
 						System.out.println("학생 : 미응모자 ");
-
-						start_mav.addObject("event_yn", studentVO.getEnter_yn());
+						start_mav.addObject("event_yn", 		studentVO.getEnter_yn());
+						
+						start_mav.addObject	("client_code",		studentVO.getClient_code());
+						start_mav.addObject	("client_mem_code",	studentVO.getClient_mem_code());
+						start_mav.addObject	("student_stt_code",studentVO.getStudent_stt_code());
+						start_mav.addObject	("in_college_yn",	studentVO.getIn_college_yn());
+						
 					} else if (studentVO.getEnter_yn().equals("Y")) {
 						System.out.println("학생 : 응모자 ");
-
 						// 응모자
 						start_mav.addObject("event_yn", studentVO.getEnter_yn());
 						// start_mav.addObject("event_yn", "N");
 					} else {
 						System.out.println("학생 : 해석 할수 없는 코드");
-
 						// 지원 되질 않는 학생
 						start_mav.addObject("event_yn", "Y");
 					}
@@ -115,6 +103,8 @@ public class Event_Controller {
 					System.out.println("코드는 있지만 관리자가 아니며, 해석 할수 없는 코드");
 					start_mav.addObject("event_yn", "Y"); // 미지원자
 				}
+				System.out.println("e_gamestart.do  끝   ====================="+getNow());
+				
 				return start_mav;
 
 			}
@@ -134,58 +124,57 @@ public class Event_Controller {
 	@RequestMapping("/e_participation.do")
 	// 참여하기 룰렛 기본 데이터 대입
 	public ModelAndView getJson(HttpServletRequest request) throws Exception {
+	
+		System.out.println("e_participation.do  시작   ====================="+getNow());
 		ModelAndView mv = new ModelAndView("jsonView1");
-		HttpSession session = request.getSession();
-		session.setAttribute("memo", request.getParameter("memo"));
+		System.out.println("memo ::"+ request.getParameter("memo"));
 
-		String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+	//	System.out.println("접속 아이피 :: " + ip);
 
-		System.out.println("HTTP_X_FORWARDED_FOR :: " + ip);
-
-		if (ip == null || ip.length() == 0
-				|| ip.toLowerCase().equals("unknown")) {
-			ip = request.getHeader("REMOTE_ADDR");
-			System.out.println(" REMOTE_ADDR :: " + ip);
-
-		}
-
-		if (ip == null || ip.length() == 0
-				|| ip.toLowerCase().equals("unknown")) {
-			ip = request.getRemoteAddr();
-			System.out.println(" :: " + ip);
-
-		}
-
-		System.out.println("접속 아이피 :: " + ip);
-
-		session.setAttribute("ip", ip);
-
+	//	mv.addObject("ip", ip);
+		mv.addObject("memo",  request.getParameter("memo"));
 		mv.addObject("e_start_btn", "e_start_btn");
 		mv.addObject("on", "on");
 
+		System.out.println("e_participation.do  끝   ====================="+getNow());
 		return mv;
 	}
 
 	@RequestMapping("/e_start_btn.do")
 	public ModelAndView result(HttpServletRequest request) throws Exception {
 
-		System.out.println("memo  ::"
-				+ request.getSession().getAttribute("memo"));
-
+		System.out.println("e_start_btn.do  시작   ====================="+getNow());
+		System.out.println("memo  ::" + request.getParameter("memo"));
+		System.out.println("client_code  ::" + request.getParameter("client_code"));
+		System.out.println("student_stt_code ::" + request.getParameter("student_stt_code"));
+		System.out.println("client_mem_code ::" + request.getParameter("client_mem_code"));
+		
 		ModelAndView result_mav = new ModelAndView("jsonView1");
 		Map<String, Object> result_map = new HashMap<>();
-		String student_stt_code = (String) request.getSession().getAttribute(
-				"student_stt_code");
+		
+		String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+	//	System.out.println("HTTP_X_FORWARDED_FOR :: " + ip);
 
-		System.out.println("student_stt_code ::" + student_stt_code);
+		if (ip == null || ip.length() == 0
+				|| ip.toLowerCase().equals("unknown")) {
+			ip = request.getHeader("REMOTE_ADDR");
+		//	System.out.println(" REMOTE_ADDR :: " + ip);
+		}
 
-		System.out.println("진입");
-		result_map = event_Service.op_Result((String) request.getSession().getAttribute("client_code"), 
-				(String) request.getSession().getAttribute("memo"),
-				(int) request.getSession().getAttribute("client_mem_code"),
-				student_stt_code,
-				(String) request.getSession().getAttribute("ip")); // 캠퍼스의 확률을
-																	// 연산
+		if (ip == null || ip.length() == 0 || ip.toLowerCase().equals("unknown")) {
+			ip = request.getRemoteAddr();
+		//	System.out.println(" :: " + ip);
+		}
+		
+			System.out.println("ip ::" +ip);
+		
+		result_map = event_Service.op_Result(
+				request.getParameter("client_code"),
+				request.getParameter("memo"),
+				Integer.parseInt(request.getParameter("client_mem_code")),
+				request.getParameter("student_stt_code"),
+				ip);
+															
 		int result_no = (int) result_map.get("result_no") + 1;
 
 		result_map.put("result_no", result_no);
@@ -197,6 +186,7 @@ public class Event_Controller {
 		System.out.println("===================================");
 		result_mav.addObject("result", result_map);
 
+		System.out.println("e_start_btn.do  끝   ====================="+getNow());
 		return result_mav;
 
 	}

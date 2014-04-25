@@ -90,7 +90,6 @@ public class Event_Dao {
 	// 이벤트 응모 데이터 입력
 	@Transactional
 	public void ins_eventMsg(EventVO eventVO) throws Exception{
-		
 		session.insert("event_ns.ins_eventMsg", eventVO);
 	}
 	
